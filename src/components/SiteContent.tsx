@@ -78,9 +78,9 @@ export function SiteContent({ copy }: { copy: SiteCopy }) {
           </div>
           <div className="mx-auto w-full min-w-0 max-w-sm md:max-w-none">
             <EditableImage
-              name="hero-wave.jpg"
+              name="hero-wave.png"
               alt=""
-              className="h-auto w-full rounded-2xl object-contain"
+              className="h-auto w-full object-contain"
             />
           </div>
         </div>
