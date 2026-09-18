@@ -1,4 +1,5 @@
 export interface SiteCopy {
+  heroTagline: string
   aboutParcours: string
   aboutNaturelle: string
   aboutHumain: string

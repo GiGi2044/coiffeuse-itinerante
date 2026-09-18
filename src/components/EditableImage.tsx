@@ -7,7 +7,7 @@ import { useIsAdmin } from '@/lib/use-is-admin'
 import { cn } from '@/lib/utils'
 
 interface EditableImageProps {
-  /** File name under content/images/, e.g. "hero-banner.jpg" */
+  /** File name under content/images/, e.g. "hero-wave.jpg" */
   name: string
   alt: string
   className?: string

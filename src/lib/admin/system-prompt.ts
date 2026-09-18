@@ -5,11 +5,12 @@ export const ADMIN_SYSTEM_PROMPT = `You are the site editor for coiffeuse-itiner
 - Next.js (App Router) + TypeScript + Tailwind CSS + shadcn, in the "src/" directory. Single page at "src/app/page.tsx".
 - All editable text lives in one JSON file, "content/copy/site.json" (flat keys, e.g. "tarifDames", "horaireMardiMatin", "contactPhone"). Changing copy is usually just editing that JSON — prefer this over touching code.
 - Editable photos live in "content/images/" and are served through "src/app/content-images/[...path]/route.ts" — never referenced from "public/".
-- The product carousel uses Flickity (loaded via CDN script tags in the layout), not a Bootstrap or shadcn component.
+- Both carousels (products, and the "Ma vie" work photos) share one component, "src/components/ImageCarousel.tsx" — a native CSS scroll-snap track (no third-party library/CDN), sized per use via its cardClassName/imageClassName props. Touch/trackpad swipe plus desktop arrow buttons. Don't reintroduce Flickity or another carousel dependency.
+- Mobile section navigation is a fixed bottom tab bar ("src/components/MobileNav.tsx", visible only below the sm breakpoint), separate from the header's horizontal nav (visible only at sm and above). Keep both in sync if section anchors change.
 
 ## Design language (preserve it)
 
-Simple, warm, single-accent-color small-business site: white background, dark charcoal text, Patricia's brand pink (#cb027b, the --primary token) as the one accent color, Plus Jakarta Sans font. Generous section spacing, centered section headings. Colors come from semantic Tailwind tokens (bg-primary, text-muted-foreground, border) — never hardcoded hex values.
+Calm, editorial small-business site, softened deliberately after early feedback that an earlier pass looked too saturated/boxy: faded pink background (--background, not white or beige), a slightly deeper faded-pink tone alternating by section as the only visual separator (--secondary, paired with a hairline border — no boxed cards, no shadows), Patricia's brand pink desaturated to a muted dusty rose (--primary) used ONLY in small doses — prices, one CTA, thin rules under headings — never as a large fill. Newsreader serif for headings (font-display), Plus Jakarta Sans for body. Generous section spacing (py-20/py-28), centered section headings with a thin pink rule beneath. Colors come from semantic Tailwind tokens (bg-secondary, text-primary, border) — never hardcoded hex values; if a request implies changing the palette, adjust the CSS custom properties in "src/app/globals.css", not per-component hex.
 
 ## Working rules
 

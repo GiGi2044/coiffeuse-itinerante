@@ -1,127 +1,141 @@
 import { EditableCopy } from '@/components/EditableCopy'
 import { EditableImage } from '@/components/EditableImage'
-import { ProductCarousel } from '@/components/ProductCarousel'
+import { ImageCarousel } from '@/components/ImageCarousel'
+import { MobileNav } from '@/components/MobileNav'
 import { buttonVariants } from '@/lib/button-variants'
 import { getSiteCopy } from '@/lib/content'
+import { CAROUSEL_ITEMS, JOURS, TARIFS, WORK_PHOTOS } from '@/lib/site-data'
 import { cn } from '@/lib/utils'
 
-const CAROUSEL_ITEMS = [
-  { name: 'carousel-1.jpg', alt: 'Coiffure réalisée par Patricia' },
-  { name: 'carousel-2.jpg', alt: 'Coiffure réalisée par Patricia' },
-  { name: 'carousel-3.jpg', alt: 'Coiffure réalisée par Patricia' },
-  { name: 'carousel-4.jpg', alt: 'Coiffure réalisée par Patricia' },
-  { name: 'carousel-5.png', alt: 'Capsules H-force' },
-  { name: 'carousel-6.png', alt: 'Colorsave' },
-  { name: 'carousel-7.png', alt: 'Equilibrium' },
-  { name: 'carousel-8.png', alt: 'Nourishing' },
-  { name: 'carousel-9.png', alt: "Shampoing Pur et Après-Shampooing Pur" },
-  { name: 'carousel-10.png', alt: 'Shampoing Sea Force et Lotion Anti-Chute Sea Force' },
-  { name: 'carousel-11.png', alt: 'Shampooing au Sébum' },
-  { name: 'carousel-12.png', alt: 'Shampooing Blond Brillant' },
-]
-
-const TARIFS = [
-  { key: 'tarifDames', label: 'Dames' },
-  { key: 'tarifHommes', label: 'Hommes' },
-  { key: 'tarifTondeuse', label: 'Coupe tondeuse' },
-  { key: 'tarifEnfants', label: 'Enfants' },
-  { key: 'tarifDeplacement', label: 'Supplément déplacement' },
-  { key: 'tarifShampoingSechage', label: 'Shampoing + séchage uniquement' },
-] as const
-
-const JOURS = ['Mardi', 'Mercredi', 'Vendredi']
+function SectionHeading({ children }: { children: React.ReactNode }) {
+  return (
+    <div className="text-center">
+      <h2 className="font-display text-2xl text-foreground italic sm:text-3xl">{children}</h2>
+      <div className="mx-auto mt-3 h-px w-10 bg-primary/70" />
+    </div>
+  )
+}
 
 export default async function HomePage() {
   const copy = await getSiteCopy()
+  const telHref = `tel:${copy.contactPhone.replace(/\s/g, '')}`
 
   return (
     <>
       {/* Header */}
       <header className="sticky top-0 z-10 border-b border-border bg-background/95 backdrop-blur">
-        <div className="mx-auto flex max-w-5xl items-center justify-between gap-4 px-4 py-3 sm:px-6">
-          <EditableImage name="logo.jpg" alt="Coupe à tout f'HAIR" className="h-10 w-auto rounded object-contain" />
-          <nav className="hidden items-center gap-6 text-sm font-medium sm:flex">
-            <a href="#about" className="text-muted-foreground hover:text-foreground">
+        <div className="mx-auto flex max-w-5xl items-center justify-between gap-4 px-4 py-4 sm:px-6">
+          <EditableImage name="logo.jpg" alt="Coupe à tout f'HAIR" className="h-9 w-auto rounded object-contain" />
+          <nav className="hidden items-center gap-8 text-sm text-muted-foreground sm:flex">
+            <a href="#about" className="hover:text-foreground">
               Qui je suis
             </a>
-            <a href="#tarifs" className="text-muted-foreground hover:text-foreground">
+            <a href="#tarifs" className="hover:text-foreground">
               Tarifs
             </a>
-            <a href="#horaires" className="text-muted-foreground hover:text-foreground">
+            <a href="#horaires" className="hover:text-foreground">
               Horaires
             </a>
           </nav>
-          <a href="#contact" className={cn(buttonVariants({ variant: 'default' }))}>
+          <a href="#contact" className={cn(buttonVariants({ variant: 'default' }), 'h-9 px-4')}>
             Contactez-moi
           </a>
         </div>
       </header>
 
-      {/* Hero */}
-      <section>
-        <EditableImage
-          name="hero-banner.jpg"
-          alt="Coupe à tout f'HAIR — coiffeuse itinérante, se déplace chez vous"
-          className="h-[45vh] w-full object-cover sm:h-[60vh]"
-        />
+      {/* Hero — real text (crisp, editable, never clipped) beside a small,
+          contained decorative graphic (never upscaled past its native size,
+          so it stays sharp at every breakpoint from 375px up). */}
+      <section className="border-b border-border">
+        <div className="mx-auto grid max-w-5xl items-center gap-12 px-4 py-16 sm:px-6 sm:py-24 md:grid-cols-[1.1fr_0.9fr] md:py-28">
+          <div className="min-w-0">
+            <p className="text-xs font-medium tracking-[0.2em] text-muted-foreground uppercase">
+              Coiffeuse itinérante
+            </p>
+            <h1 className="font-display mt-4 text-4xl leading-tight text-foreground sm:text-5xl lg:text-6xl">
+              <EditableCopy copyKey="contactBusiness" value={copy.contactBusiness} />
+            </h1>
+            <EditableCopy
+              as="p"
+              copyKey="heroTagline"
+              value={copy.heroTagline}
+              className="mt-5 block max-w-md text-base leading-relaxed text-muted-foreground sm:text-lg"
+            />
+            <div className="mt-8 flex flex-wrap items-center gap-3">
+              <a href={telHref} className={cn(buttonVariants({ variant: 'default' }), 'h-10 px-5')}>
+                <EditableCopy copyKey="contactPhone" value={copy.contactPhone} />
+              </a>
+              <a href="#tarifs" className={cn(buttonVariants({ variant: 'outline' }), 'h-10 px-5')}>
+                Voir les tarifs
+              </a>
+            </div>
+          </div>
+          <div className="mx-auto w-full min-w-0 max-w-sm md:max-w-none">
+            <EditableImage
+              name="hero-wave.jpg"
+              alt=""
+              className="h-auto w-full rounded-2xl object-contain"
+            />
+          </div>
+        </div>
       </section>
 
-      {/* About */}
-      <section id="about" className="px-4 py-16 sm:px-6 sm:py-24">
-        <div className="mx-auto max-w-5xl">
-          <h2 className="text-center text-xl font-semibold tracking-tight">Qui je suis</h2>
-          <div className="mt-12 grid gap-10 sm:grid-cols-3">
-            <div>
-              <h3 className="text-center text-lg font-semibold">Mon Parcours</h3>
+      {/* About — one flowing column, hairline dividers instead of boxed cards.
+          Alternates with a slightly deeper faded-pink panel so each section
+          reads as distinct without boxes or shadows. */}
+      <section id="about" className="scroll-mt-20 border-y border-border bg-secondary px-4 py-20 sm:px-6 sm:py-28">
+        <div className="mx-auto max-w-2xl">
+          <SectionHeading>Qui je suis</SectionHeading>
+          <div className="mt-12 divide-y divide-border">
+            <div className="pb-8">
+              <h3 className="font-display text-lg text-foreground italic">Mon Parcours</h3>
               <EditableCopy
                 as="p"
                 copyKey="aboutParcours"
                 value={copy.aboutParcours}
                 multiline
-                className="mt-3 block text-sm leading-relaxed text-muted-foreground"
+                className="mt-3 block text-sm leading-relaxed text-muted-foreground sm:text-base"
               />
             </div>
-            <div>
-              <h3 className="text-center text-lg font-semibold">Une Coiffure Naturelle</h3>
+            <div className="py-8">
+              <h3 className="font-display text-lg text-foreground italic">Une Coiffure Naturelle</h3>
               <EditableCopy
                 as="p"
                 copyKey="aboutNaturelle"
                 value={copy.aboutNaturelle}
                 multiline
-                className="mt-3 block text-sm leading-relaxed text-muted-foreground"
+                className="mt-3 block text-sm leading-relaxed text-muted-foreground sm:text-base"
               />
             </div>
-            <div>
-              <h3 className="text-center text-lg font-semibold">Un Moment Humain</h3>
+            <div className="pt-8">
+              <h3 className="font-display text-lg text-foreground italic">Un Moment Humain</h3>
               <EditableCopy
                 as="p"
                 copyKey="aboutHumain"
                 value={copy.aboutHumain}
                 multiline
-                className="mt-3 block text-sm leading-relaxed text-muted-foreground"
+                className="mt-3 block text-sm leading-relaxed text-muted-foreground sm:text-base"
               />
             </div>
           </div>
         </div>
       </section>
 
-      {/* Products */}
-      <section className="bg-primary px-4 py-16 sm:px-6 sm:py-24">
+      {/* Products — plain base panel (alternates against About/Video) */}
+      <section className="px-4 py-20 sm:px-6 sm:py-28">
         <div className="mx-auto max-w-5xl">
-          <h2 className="text-center text-xl font-semibold tracking-tight text-primary-foreground">
-            Produits et Soins
-          </h2>
+          <SectionHeading>Produits et Soins</SectionHeading>
           <div className="mt-12">
-            <ProductCarousel items={CAROUSEL_ITEMS} />
+            <ImageCarousel items={CAROUSEL_ITEMS} />
           </div>
         </div>
       </section>
 
-      {/* Video */}
-      <section className="bg-muted px-4 py-16 sm:px-6 sm:py-24">
+      {/* Video + photo carousel — alternates with a deeper faded-pink panel */}
+      <section className="border-y border-border bg-secondary px-4 py-20 sm:px-6 sm:py-28">
         <div className="mx-auto max-w-3xl text-center">
-          <h2 className="text-xl font-semibold tracking-tight">Ma vie</h2>
-          <div className="mx-auto mt-8 aspect-video w-full overflow-hidden rounded-lg">
+          <SectionHeading>Ma vie</SectionHeading>
+          <div className="mx-auto mt-10 aspect-video w-full overflow-hidden rounded-lg">
             <iframe
               src="https://player.vimeo.com/video/896607251?h=443abab20d"
               allowFullScreen
@@ -130,53 +144,62 @@ export default async function HomePage() {
             />
           </div>
         </div>
+        <div className="mx-auto mt-10 max-w-5xl">
+          <ImageCarousel
+            items={WORK_PHOTOS}
+            cardClassName="w-72 shrink-0 sm:w-96"
+            imageClassName="aspect-[3/4] w-full rounded-lg object-cover"
+          />
+        </div>
       </section>
 
-      {/* Tarifs */}
-      <section id="tarifs" className="px-4 py-16 sm:px-6 sm:py-24">
+      {/* Tarifs — hairline list, price in the accent color; plain panel (alternates against Video/Horaires) */}
+      <section id="tarifs" className="scroll-mt-20 px-4 py-20 sm:px-6 sm:py-28">
         <div className="mx-auto max-w-2xl">
-          <h2 className="text-center text-xl font-semibold tracking-tight">Tarifs</h2>
-          <ul className="mt-10 divide-y divide-border border-t border-border">
+          <SectionHeading>Tarifs</SectionHeading>
+          <ul className="mt-12 divide-y divide-border">
             {TARIFS.map(({ key, label }) => (
-              <li key={key} className="flex flex-wrap items-baseline gap-x-2 py-3 text-sm">
-                <span className="font-semibold">{label} :</span>
-                <EditableCopy copyKey={key} value={copy[key]} className="text-muted-foreground" />
+              <li key={key} className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1 py-4 text-sm">
+                <span className="text-foreground">{label}</span>
+                <EditableCopy
+                  copyKey={key}
+                  value={copy[key]}
+                  className="text-right font-medium text-primary tabular-nums"
+                />
               </li>
             ))}
-            <li className="flex flex-wrap items-baseline gap-x-2 py-3 text-sm text-destructive">
+            <li className="flex flex-wrap items-baseline gap-x-2 py-4 text-sm text-destructive">
               <EditableCopy copyKey="tarifAnnulation" value={copy.tarifAnnulation} />
             </li>
           </ul>
         </div>
       </section>
 
-      {/* Horaires */}
-      <section id="horaires" className="bg-muted px-4 py-16 sm:px-6 sm:py-24">
+      {/* Horaires — same hairline treatment as Tarifs, no boxed table; alternates with a deeper faded-pink panel */}
+      <section id="horaires" className="scroll-mt-20 border-y border-border bg-secondary px-4 py-20 sm:px-6 sm:py-28">
         <div className="mx-auto max-w-2xl">
-          <h2 className="text-center text-xl font-semibold tracking-tight">Horaires</h2>
-          <div className="mt-10 overflow-x-auto rounded-lg border border-border bg-background">
-            <table className="w-full table-fixed text-center text-sm">
-              <thead className="bg-secondary">
-                <tr>
-                  <th className="px-3 py-2 font-semibold">Jour</th>
-                  <th className="px-3 py-2 font-semibold">Matin</th>
-                  <th className="px-3 py-2 font-semibold">Après-midi</th>
+          <SectionHeading>Horaires</SectionHeading>
+          <table className="mt-12 w-full text-center text-sm">
+            <thead>
+              <tr className="border-b border-border text-xs tracking-wide text-muted-foreground uppercase">
+                <th className="pb-3 font-medium">Jour</th>
+                <th className="pb-3 font-medium">Matin</th>
+                <th className="pb-3 font-medium">Après-midi</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-border">
+              {JOURS.map((jour) => (
+                <tr key={jour}>
+                  <td className="py-3 font-medium text-foreground">{jour}</td>
+                  <td className="py-3 text-muted-foreground tabular-nums">{copy.horaireMatin}</td>
+                  <td className="py-3 text-muted-foreground tabular-nums">{copy.horaireApresMidi}</td>
                 </tr>
-              </thead>
-              <tbody>
-                {JOURS.map((jour) => (
-                  <tr key={jour} className="border-t border-border">
-                    <td className="px-3 py-2">{jour}</td>
-                    <td className="px-3 py-2 text-muted-foreground">{copy.horaireMatin}</td>
-                    <td className="px-3 py-2 text-muted-foreground">{copy.horaireApresMidi}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-          <div className="mt-6 space-y-2 text-center text-sm">
+              ))}
+            </tbody>
+          </table>
+          <div className="mt-8 space-y-2 text-center text-sm">
             <p>
-              <span className="font-semibold">Zone : </span>
+              <span className="font-medium text-foreground">Zone : </span>
               <EditableCopy copyKey="horaireZone" value={copy.horaireZone} className="text-muted-foreground" />
             </p>
             <EditableCopy
@@ -190,19 +213,19 @@ export default async function HomePage() {
       </section>
 
       {/* Contact */}
-      <section id="contact" className="px-4 py-16 sm:px-6 sm:py-24">
+      <section id="contact" className="scroll-mt-20 px-4 py-20 sm:px-6 sm:py-28">
         <div className="mx-auto max-w-xl text-center">
-          <h2 className="text-xl font-semibold tracking-tight">Contact</h2>
-          <div className="mt-8 space-y-2 text-sm">
-            <EditableCopy as="p" copyKey="contactName" value={copy.contactName} className="block font-semibold" />
+          <SectionHeading>Contact</SectionHeading>
+          <div className="mt-10 space-y-2 text-sm">
+            <EditableCopy as="p" copyKey="contactName" value={copy.contactName} className="block font-medium text-foreground" />
             <p className="text-muted-foreground">
               <EditableCopy copyKey="contactBusiness" value={copy.contactBusiness} />
               <br />
               <EditableCopy copyKey="contactAddress" value={copy.contactAddress} />
             </p>
             <p>
-              <span className="font-semibold">Téléphone : </span>
-              <a href={`tel:${copy.contactPhone.replace(/\s/g, '')}`} className="text-primary hover:underline">
+              <span className="font-medium text-foreground">Téléphone : </span>
+              <a href={telHref} className="text-primary hover:underline">
                 <EditableCopy copyKey="contactPhone" value={copy.contactPhone} />
               </a>
             </p>
@@ -211,9 +234,13 @@ export default async function HomePage() {
       </section>
 
       {/* Footer */}
-      <footer className="border-t border-border bg-foreground px-4 py-8 text-center text-sm text-background">
+      <footer className="border-t border-border bg-foreground px-4 py-8 pb-[calc(2rem+env(safe-area-inset-bottom,0px))] text-center text-sm text-background sm:pb-8">
         <EditableCopy copyKey="footerText" value={copy.footerText} />
       </footer>
+
+      {/* Fixed on mobile only — reserve the space so it never overlaps content */}
+      <div className="h-16 sm:hidden" style={{ height: 'calc(4rem + env(safe-area-inset-bottom, 0px))' }} />
+      <MobileNav />
     </>
   )
 }
