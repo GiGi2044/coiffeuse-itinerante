@@ -1,6 +1,7 @@
 'use client'
 
 import { useRef, useState } from 'react'
+import { ImagePlusIcon } from 'lucide-react'
 import { toast } from 'sonner'
 import { useEditMode } from '@/lib/edit-mode'
 import { cn } from '@/lib/utils'
@@ -51,12 +52,16 @@ function downscaleToJpegBase64(file: File): Promise<string> {
 // picker; the chosen file is downscaled and previewed instantly (a data URL,
 // entirely client-side) and staged in the editor's in-memory draft — it is
 // NOT uploaded here, that only happens when the editor's "Apply" button is
-// used (see src/app/admin/AdminEditor.tsx).
+// used (see src/components/admin/AdminEditor.tsx). A freshly-added list item
+// (see ListControls) has a `name` with no file behind it yet — the network
+// image 404s, and this shows an "add a photo" placeholder instead of a
+// broken image until one is picked.
 export function EditableImage({ name, alt, className }: EditableImageProps) {
   const { editable, setImage } = useEditMode()
   const inputRef = useRef<HTMLInputElement>(null)
   const [preparing, setPreparing] = useState(false)
   const [src, setSrc] = useState(`/content-images/${name}`)
+  const [loadFailed, setLoadFailed] = useState(false)
 
   const img = (
     // eslint-disable-next-line @next/next/no-img-element
@@ -71,6 +76,7 @@ export function EditableImage({ name, alt, className }: EditableImageProps) {
       const base64 = await downscaleToJpegBase64(file)
       const jpegName = name.replace(/\.(jpe?g|png|webp)$/i, '.jpg')
       setSrc(`data:image/jpeg;base64,${base64}`)
+      setLoadFailed(false)
       setImage(jpegName, base64)
     } catch (e) {
       toast.error(e instanceof Error ? e.message : 'Impossible de préparer cette photo')
@@ -81,14 +87,22 @@ export function EditableImage({ name, alt, className }: EditableImageProps) {
 
   return (
     <div className={cn('group relative cursor-pointer', className)} onClick={() => inputRef.current?.click()}>
-      {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img
-        src={src}
-        alt={alt}
-        className={cn('h-full w-full object-cover transition-opacity', preparing && 'opacity-60')}
-      />
+      {loadFailed ? (
+        <div className="flex h-full w-full flex-col items-center justify-center gap-2 rounded-[inherit] border border-dashed border-muted-foreground/40 bg-muted text-muted-foreground">
+          <ImagePlusIcon className="size-6" aria-hidden />
+          <span className="px-2 text-center text-xs">Cliquer pour ajouter une photo</span>
+        </div>
+      ) : (
+        // eslint-disable-next-line @next/next/no-img-element
+        <img
+          src={src}
+          alt={alt}
+          onError={() => setLoadFailed(true)}
+          className={cn('h-full w-full object-cover transition-opacity', preparing && 'opacity-60')}
+        />
+      )}
       <div className="pointer-events-none absolute inset-0 flex items-center justify-center bg-black/0 text-sm font-medium text-white opacity-0 transition-all group-hover:bg-black/40 group-hover:opacity-100">
-        {preparing ? 'Préparation…' : 'Cliquer pour changer la photo'}
+        {preparing ? 'Préparation…' : loadFailed ? '' : 'Cliquer pour changer la photo'}
       </div>
       <input
         ref={inputRef}

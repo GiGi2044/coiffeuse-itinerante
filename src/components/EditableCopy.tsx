@@ -1,12 +1,10 @@
 'use client'
 
 import { Fragment, useRef, useState } from 'react'
-import { useEditMode } from '@/lib/edit-mode'
+import { useEditMode, type ListField, type ListKey } from '@/lib/edit-mode'
 import type { SiteCopy } from '@/types'
 
-interface EditableCopyProps {
-  /** Key inside content/copy/site.json */
-  copyKey: keyof SiteCopy
+interface BaseProps {
   /** Current value, provided by the parent (server render on the public page,
       or the admin editor's in-memory draft on /admin) */
   value: string
@@ -16,6 +14,13 @@ interface EditableCopyProps {
   multiline?: boolean
 }
 
+// Either a top-level content/copy/site.json key, or one field on one item of
+// a list (tarifs/carouselItems/workPhotos) — the two ways a piece of text on
+// the page maps back to the content file.
+type EditableCopyProps =
+  | (BaseProps & { copyKey: keyof SiteCopy; listTarget?: undefined })
+  | (BaseProps & { copyKey?: undefined; listTarget: { list: ListKey; id: string; field: ListField } })
+
 // Editability comes from context (see src/lib/edit-mode.tsx), not a
 // self-check — outside an EditModeProvider (the public page) this always
 // renders exactly what the server rendered, so the page stays static with no
@@ -23,15 +28,16 @@ interface EditableCopyProps {
 // becomes click-to-edit: the element turns contentEditable, and on
 // blur/Enter it stages the new value in the editor's in-memory draft — it is
 // NOT saved to the server here, that only happens when the editor's "Apply"
-// button is used (see src/app/admin/AdminEditor.tsx).
+// button is used (see src/components/admin/AdminEditor.tsx).
 export function EditableCopy({
-  copyKey,
   value,
   as: Tag = 'span',
   className,
   multiline = false,
+  copyKey,
+  listTarget,
 }: EditableCopyProps) {
-  const { editable, setText } = useEditMode()
+  const { editable, setText, setListField } = useEditMode()
   const ref = useRef<HTMLElement>(null)
   const cancelledRef = useRef(false)
   const [editing, setEditing] = useState(false)
@@ -59,7 +65,8 @@ export function EditableCopy({
       restore()
       return
     }
-    setText(copyKey, newValue)
+    if (copyKey) setText(copyKey, newValue)
+    else setListField(listTarget.list, listTarget.id, listTarget.field, newValue)
   }
 
   // normal-case while editing: innerText reflects CSS text-transform, so an

@@ -7,8 +7,8 @@ import { toast } from 'sonner'
 import { AssistantPane } from '@/components/admin/AssistantPane'
 import { Button } from '@/components/ui/button'
 import { SiteContent } from '@/components/SiteContent'
-import { EditModeProvider } from '@/lib/edit-mode'
-import type { SiteCopy } from '@/types'
+import { EditModeProvider, type ListField, type ListKey } from '@/lib/edit-mode'
+import type { CarouselImage, SiteCopy, TarifItem } from '@/types'
 
 const COPY_PATH = 'content/copy/site.json'
 
@@ -31,6 +31,48 @@ export function AdminEditor({ initialCopy }: { initialCopy: SiteCopy }) {
 
   function setImage(jpegName: string, base64: string) {
     setPendingImages((prev) => new Map(prev).set(jpegName, base64))
+    setDirty(true)
+  }
+
+  function setListField(list: ListKey, id: string, field: ListField, value: string) {
+    setDraftCopy((prev) => {
+      if (list === 'tarifs') {
+        return {
+          ...prev,
+          tarifs: prev.tarifs.map((t) => (t.id === id ? ({ ...t, [field]: value } as TarifItem) : t)),
+        }
+      }
+      return {
+        ...prev,
+        [list]: prev[list].map((item) => (item.id === id ? ({ ...item, [field]: value } as CarouselImage) : item)),
+      }
+    })
+    setDirty(true)
+  }
+
+  function addListItem(list: ListKey) {
+    setDraftCopy((prev) => {
+      if (list === 'tarifs') {
+        const item: TarifItem = { id: crypto.randomUUID(), label: 'Nouveau tarif', price: 'CHF 0.-' }
+        return { ...prev, tarifs: [...prev.tarifs, item] }
+      }
+      const item: CarouselImage = {
+        id: crypto.randomUUID(),
+        name: `carousel-${crypto.randomUUID().slice(0, 8)}.jpg`,
+        alt: '',
+      }
+      return { ...prev, [list]: [...prev[list], item] }
+    })
+    setDirty(true)
+  }
+
+  function removeListItem(list: ListKey, id: string) {
+    setDraftCopy((prev) => {
+      if (list === 'tarifs') {
+        return { ...prev, tarifs: prev.tarifs.filter((t) => t.id !== id) }
+      }
+      return { ...prev, [list]: prev[list].filter((item) => item.id !== id) }
+    })
     setDirty(true)
   }
 
@@ -72,7 +114,7 @@ export function AdminEditor({ initialCopy }: { initialCopy: SiteCopy }) {
   }
 
   return (
-    <EditModeProvider value={{ editable: true, setText, setImage }}>
+    <EditModeProvider value={{ editable: true, setText, setImage, setListField, addListItem, removeListItem }}>
       <div className="grid lg:grid-cols-[1fr_340px] lg:items-start lg:gap-8">
         {/* The real page, editable in place */}
         <div className="min-w-0">

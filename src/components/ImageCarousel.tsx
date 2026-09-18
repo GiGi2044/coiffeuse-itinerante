@@ -2,9 +2,12 @@
 
 import { useEffect, useRef } from 'react'
 import { ChevronLeftIcon, ChevronRightIcon } from 'lucide-react'
+import { RemoveListItemButton } from '@/components/admin/ListControls'
 import { EditableImage } from '@/components/EditableImage'
+import type { ListKey } from '@/lib/edit-mode'
 
 interface CarouselItem {
+  id: string
   name: string
   alt: string
 }
@@ -15,6 +18,12 @@ interface ImageCarouselProps {
   cardClassName?: string
   /** Sizes/crops each photo — defaults to a square product-style crop. */
   imageClassName?: string
+  /** When given, an admin-only remove (×) button is rendered on each real
+      card (never the clones either side, so it doesn't get tripled) —
+      rendered here rather than passed in as a prop from the parent, since
+      SiteContent is a server component and can't hand a render function
+      across to this client component. */
+  listKey?: ListKey
 }
 
 // Manual-only carousel — no autoplay. The arrow buttons can be pressed any
@@ -29,6 +38,7 @@ export function ImageCarousel({
   items,
   cardClassName = 'w-64 shrink-0 sm:w-80',
   imageClassName = 'aspect-square w-full rounded-lg object-cover',
+  listKey,
 }: ImageCarouselProps) {
   const scrollerRef = useRef<HTMLDivElement>(null)
   const markerRef = useRef<HTMLDivElement>(null)
@@ -76,22 +86,23 @@ export function ImageCarousel({
     <div className="relative">
       <div ref={scrollerRef} className="no-scrollbar -mx-4 flex gap-4 overflow-x-auto px-4 pb-2">
         {items.map((item) => (
-          <div key={`before-${item.name}`} data-carousel-cell aria-hidden className={cardClassName}>
+          <div key={`before-${item.id}`} data-carousel-cell aria-hidden className={cardClassName}>
             <EditableImage name={item.name} alt="" className={imageClassName} />
           </div>
         ))}
         {items.map((item, i) => (
           <div
-            key={`real-${item.name}`}
+            key={`real-${item.id}`}
             ref={i === 0 ? markerRef : undefined}
             data-carousel-cell
-            className={cardClassName}
+            className={`group relative ${cardClassName}`}
           >
             <EditableImage name={item.name} alt={item.alt} className={imageClassName} />
+            {listKey && <RemoveListItemButton list={listKey} id={item.id} />}
           </div>
         ))}
         {items.map((item) => (
-          <div key={`after-${item.name}`} data-carousel-cell aria-hidden className={cardClassName}>
+          <div key={`after-${item.id}`} data-carousel-cell aria-hidden className={cardClassName}>
             <EditableImage name={item.name} alt="" className={imageClassName} />
           </div>
         ))}

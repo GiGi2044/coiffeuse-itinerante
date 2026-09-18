@@ -1,9 +1,11 @@
+import { AddListItemButton, RemoveListItemButton } from '@/components/admin/ListControls'
 import { EditableCopy } from '@/components/EditableCopy'
 import { EditableImage } from '@/components/EditableImage'
+import { GuardedLink } from '@/components/GuardedLink'
 import { ImageCarousel } from '@/components/ImageCarousel'
 import { MobileNav } from '@/components/MobileNav'
 import { buttonVariants } from '@/lib/button-variants'
-import { CAROUSEL_ITEMS, JOURS, TARIFS, WORK_PHOTOS } from '@/lib/site-data'
+import { JOURS } from '@/lib/site-data'
 import { cn } from '@/lib/utils'
 import type { SiteCopy } from '@/types'
 
@@ -19,7 +21,7 @@ function SectionHeading({ children }: { children: React.ReactNode }) {
 // The whole homepage, as a plain component driven entirely by its `copy` prop.
 // Rendered two ways: the public route (`src/app/page.tsx`) passes server-fetched
 // copy with no EditModeProvider above it, so it's always static. The admin
-// editor (`src/app/admin/AdminEditor.tsx`) passes locally-staged draft copy
+// editor (`src/components/admin/AdminEditor.tsx`) passes locally-staged draft copy
 // inside an EditModeProvider, so every EditableCopy/EditableImage in this same
 // tree becomes click-to-edit — that's what makes "the admin page look like the
 // page" true by construction rather than by duplicated markup.
@@ -33,19 +35,19 @@ export function SiteContent({ copy }: { copy: SiteCopy }) {
         <div className="mx-auto flex max-w-5xl items-center justify-between gap-4 px-4 py-4 sm:px-6">
           <EditableImage name="logo.jpg" alt="Coupe à tout f'HAIR" className="h-9 w-auto rounded object-contain" />
           <nav className="hidden items-center gap-8 text-sm text-muted-foreground sm:flex">
-            <a href="#about" className="hover:text-foreground">
-              Qui je suis
-            </a>
-            <a href="#tarifs" className="hover:text-foreground">
-              Tarifs
-            </a>
-            <a href="#horaires" className="hover:text-foreground">
-              Horaires
-            </a>
+            <GuardedLink href="#about" className="hover:text-foreground">
+              <EditableCopy copyKey="navAbout" value={copy.navAbout} />
+            </GuardedLink>
+            <GuardedLink href="#tarifs" className="hover:text-foreground">
+              <EditableCopy copyKey="navTarifs" value={copy.navTarifs} />
+            </GuardedLink>
+            <GuardedLink href="#horaires" className="hover:text-foreground">
+              <EditableCopy copyKey="navHoraires" value={copy.navHoraires} />
+            </GuardedLink>
           </nav>
-          <a href="#contact" className={cn(buttonVariants({ variant: 'default' }), 'h-9 px-4')}>
-            Contactez-moi
-          </a>
+          <GuardedLink href="#contact" className={cn(buttonVariants({ variant: 'default' }), 'h-9 px-4')}>
+            <EditableCopy copyKey="ctaContact" value={copy.ctaContact} />
+          </GuardedLink>
         </div>
       </header>
 
@@ -68,20 +70,16 @@ export function SiteContent({ copy }: { copy: SiteCopy }) {
               className="mt-5 block max-w-md text-base leading-relaxed text-muted-foreground sm:text-lg"
             />
             <div className="mt-8 flex flex-wrap items-center gap-3">
-              <a href={telHref} className={cn(buttonVariants({ variant: 'default' }), 'h-10 px-5')}>
+              <GuardedLink href={telHref} className={cn(buttonVariants({ variant: 'default' }), 'h-10 px-5')}>
                 <EditableCopy copyKey="contactPhone" value={copy.contactPhone} />
-              </a>
-              <a href="#tarifs" className={cn(buttonVariants({ variant: 'outline' }), 'h-10 px-5')}>
-                Voir les tarifs
-              </a>
+              </GuardedLink>
+              <GuardedLink href="#tarifs" className={cn(buttonVariants({ variant: 'outline' }), 'h-10 px-5')}>
+                <EditableCopy copyKey="ctaTarifs" value={copy.ctaTarifs} />
+              </GuardedLink>
             </div>
           </div>
           <div className="mx-auto w-full min-w-0 max-w-sm md:max-w-none">
-            <EditableImage
-              name="hero-wave.png"
-              alt=""
-              className="h-auto w-full object-contain"
-            />
+            <EditableImage name="hero-wave.png" alt="" className="h-auto w-full object-contain" />
           </div>
         </div>
       </section>
@@ -91,7 +89,9 @@ export function SiteContent({ copy }: { copy: SiteCopy }) {
           reads as distinct without boxes or shadows. */}
       <section id="about" className="scroll-mt-20 border-y border-border bg-secondary px-4 py-20 sm:px-6 sm:py-28">
         <div className="mx-auto max-w-2xl">
-          <SectionHeading>Qui je suis</SectionHeading>
+          <SectionHeading>
+            <EditableCopy copyKey="headingAbout" value={copy.headingAbout} />
+          </SectionHeading>
           <div className="mt-12 divide-y divide-border">
             <div className="pb-8">
               <h3 className="font-display text-lg text-foreground italic">Mon Parcours</h3>
@@ -130,9 +130,14 @@ export function SiteContent({ copy }: { copy: SiteCopy }) {
       {/* Products — plain base panel (alternates against About/Video) */}
       <section className="px-4 py-20 sm:px-6 sm:py-28">
         <div className="mx-auto max-w-5xl">
-          <SectionHeading>Produits et Soins</SectionHeading>
+          <SectionHeading>
+            <EditableCopy copyKey="headingProducts" value={copy.headingProducts} />
+          </SectionHeading>
           <div className="mt-12">
-            <ImageCarousel items={CAROUSEL_ITEMS} />
+            <ImageCarousel items={copy.carouselItems} listKey="carouselItems" />
+            <div className="mt-4 flex justify-center">
+              <AddListItemButton list="carouselItems" label="Ajouter une photo produit" />
+            </div>
           </div>
         </div>
       </section>
@@ -140,7 +145,9 @@ export function SiteContent({ copy }: { copy: SiteCopy }) {
       {/* Video + photo carousel — alternates with a deeper faded-pink panel */}
       <section className="border-y border-border bg-secondary px-4 py-20 sm:px-6 sm:py-28">
         <div className="mx-auto max-w-3xl text-center">
-          <SectionHeading>Ma vie</SectionHeading>
+          <SectionHeading>
+            <EditableCopy copyKey="headingMaVie" value={copy.headingMaVie} />
+          </SectionHeading>
           <div className="mx-auto mt-10 aspect-video w-full overflow-hidden rounded-lg">
             <iframe
               src="https://player.vimeo.com/video/896607251?h=443abab20d"
@@ -152,39 +159,60 @@ export function SiteContent({ copy }: { copy: SiteCopy }) {
         </div>
         <div className="mx-auto mt-10 max-w-5xl">
           <ImageCarousel
-            items={WORK_PHOTOS}
+            items={copy.workPhotos}
             cardClassName="w-72 shrink-0 sm:w-96"
             imageClassName="aspect-[3/4] w-full rounded-lg object-cover"
+            listKey="workPhotos"
           />
+          <div className="mt-4 flex justify-center">
+            <AddListItemButton list="workPhotos" label="Ajouter une photo" />
+          </div>
         </div>
       </section>
 
       {/* Tarifs — hairline list, price in the accent color; plain panel (alternates against Video/Horaires) */}
       <section id="tarifs" className="scroll-mt-20 px-4 py-20 sm:px-6 sm:py-28">
         <div className="mx-auto max-w-2xl">
-          <SectionHeading>Tarifs</SectionHeading>
+          <SectionHeading>
+            <EditableCopy copyKey="headingTarifs" value={copy.headingTarifs} />
+          </SectionHeading>
           <ul className="mt-12 divide-y divide-border">
-            {TARIFS.map(({ key, label }) => (
-              <li key={key} className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1 py-4 text-sm">
-                <span className="text-foreground">{label}</span>
+            {copy.tarifs.map((tarif) => (
+              <li
+                key={tarif.id}
+                className="group relative flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1 py-4 pr-8 text-sm"
+              >
                 <EditableCopy
-                  copyKey={key}
-                  value={copy[key]}
+                  value={tarif.label}
+                  listTarget={{ list: 'tarifs', id: tarif.id, field: 'label' }}
+                  className="text-foreground"
+                />
+                <EditableCopy
+                  value={tarif.price}
+                  listTarget={{ list: 'tarifs', id: tarif.id, field: 'price' }}
                   className="text-right font-medium text-primary tabular-nums"
                 />
+                <div className="absolute top-1/2 right-0 -translate-y-1/2">
+                  <RemoveListItemButton list="tarifs" id={tarif.id} />
+                </div>
               </li>
             ))}
             <li className="flex flex-wrap items-baseline gap-x-2 py-4 text-sm text-destructive">
               <EditableCopy copyKey="tarifAnnulation" value={copy.tarifAnnulation} />
             </li>
           </ul>
+          <div className="mt-4">
+            <AddListItemButton list="tarifs" label="Ajouter un tarif" />
+          </div>
         </div>
       </section>
 
       {/* Horaires — same hairline treatment as Tarifs, no boxed table; alternates with a deeper faded-pink panel */}
       <section id="horaires" className="scroll-mt-20 border-y border-border bg-secondary px-4 py-20 sm:px-6 sm:py-28">
         <div className="mx-auto max-w-2xl">
-          <SectionHeading>Horaires</SectionHeading>
+          <SectionHeading>
+            <EditableCopy copyKey="headingHoraires" value={copy.headingHoraires} />
+          </SectionHeading>
           <table className="mt-12 w-full text-center text-sm">
             <thead>
               <tr className="border-b border-border text-xs tracking-wide text-muted-foreground uppercase">
@@ -225,7 +253,9 @@ export function SiteContent({ copy }: { copy: SiteCopy }) {
       {/* Contact */}
       <section id="contact" className="scroll-mt-20 px-4 py-20 sm:px-6 sm:py-28">
         <div className="mx-auto max-w-xl text-center">
-          <SectionHeading>Contact</SectionHeading>
+          <SectionHeading>
+            <EditableCopy copyKey="headingContact" value={copy.headingContact} />
+          </SectionHeading>
           <div className="mt-10 space-y-2 text-sm">
             <EditableCopy as="p" copyKey="contactName" value={copy.contactName} className="block font-medium text-foreground" />
             <p className="text-muted-foreground">
@@ -235,9 +265,9 @@ export function SiteContent({ copy }: { copy: SiteCopy }) {
             </p>
             <p>
               <span className="font-medium text-foreground">Téléphone : </span>
-              <a href={telHref} className="text-primary hover:underline">
+              <GuardedLink href={telHref} className="text-primary hover:underline">
                 <EditableCopy copyKey="contactPhone" value={copy.contactPhone} />
-              </a>
+              </GuardedLink>
             </p>
           </div>
         </div>
@@ -250,7 +280,7 @@ export function SiteContent({ copy }: { copy: SiteCopy }) {
 
       {/* Fixed on mobile only — reserve the space so it never overlaps content */}
       <div className="h-16 sm:hidden" style={{ height: 'calc(4rem + env(safe-area-inset-bottom, 0px))' }} />
-      <MobileNav />
+      <MobileNav copy={copy} />
     </>
   )
 }
