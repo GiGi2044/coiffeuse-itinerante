@@ -17,8 +17,8 @@ just reverting the DNS records.
    | `ANTHROPIC_API_KEY` | [console.anthropic.com](https://console.anthropic.com) → create a **workspace with a monthly spend cap** (e.g. $5) → API key from that workspace. This is what makes the Assistant tab cost real money — a typical AI-assisted edit is a few cents, but a capped key keeps a mistake or misuse from running up a bill. |
    | `ADMIN_GITHUB_TOKEN` | GitHub → Settings → Developer settings → Fine-grained tokens → new token scoped to **only this repo** with **Contents: Read and write** |
    | `ADMIN_REPO` | `GiGi2044/coiffeuse-itinerante` |
-   | `VERCEL_TOKEN` | Vercel → Account Settings → Tokens (gates Publish on the preview build) |
-   | `VERCEL_PROJECT_ID` | Vercel → project → Settings → General |
+   | `ADMIN_VERCEL_TOKEN` | Vercel → Account Settings → Tokens (gates Publish on the preview build) — named with an `ADMIN_` prefix because Vercel reserves the plain `VERCEL_` prefix for its own auto-populated variables and won't accept a custom one there |
+   | `ADMIN_VERCEL_PROJECT_ID` | Vercel → project → Settings → General |
 
 4. Redeploy after adding the env vars, then review everything on the `*.vercel.app` URL —
    every section, phone width, the `/admin` login and click-to-edit.

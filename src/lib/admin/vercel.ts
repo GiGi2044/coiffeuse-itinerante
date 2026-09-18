@@ -1,5 +1,7 @@
-const TOKEN = (process.env.VERCEL_TOKEN ?? '').trim()
-const PROJECT_ID = (process.env.VERCEL_PROJECT_ID ?? '').trim()
+// Named with an ADMIN_ prefix rather than VERCEL_ — Vercel reserves that
+// prefix for its own auto-populated system env vars and rejects custom ones.
+const TOKEN = (process.env.ADMIN_VERCEL_TOKEN ?? '').trim()
+const PROJECT_ID = (process.env.ADMIN_VERCEL_PROJECT_ID ?? '').trim()
 
 export type BuildState = 'QUEUED' | 'BUILDING' | 'READY' | 'ERROR' | 'CANCELED'
 
