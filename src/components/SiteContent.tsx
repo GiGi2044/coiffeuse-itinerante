@@ -5,6 +5,7 @@ import { GuardedLink } from '@/components/GuardedLink'
 import { ImageCarousel } from '@/components/ImageCarousel'
 import { MobileNav } from '@/components/MobileNav'
 import { buttonVariants } from '@/lib/button-variants'
+import { LightboxProvider } from '@/lib/lightbox'
 import { JOURS } from '@/lib/site-data'
 import { cn } from '@/lib/utils'
 import type { SiteCopy } from '@/types'
@@ -29,7 +30,7 @@ export function SiteContent({ copy }: { copy: SiteCopy }) {
   const telHref = `tel:${copy.contactPhone.replace(/\s/g, '')}`
 
   return (
-    <>
+    <LightboxProvider>
       {/* Header */}
       <header className="sticky top-0 z-10 border-b border-border bg-background/95 backdrop-blur">
         <div className="mx-auto flex max-w-5xl items-center justify-between gap-4 px-4 py-4 sm:px-6">
@@ -161,7 +162,7 @@ export function SiteContent({ copy }: { copy: SiteCopy }) {
           <ImageCarousel
             items={copy.workPhotos}
             cardClassName="w-72 shrink-0 sm:w-96"
-            imageClassName="aspect-[3/4] w-full rounded-lg object-cover"
+            imageClassName="aspect-[3/4] w-full object-cover"
             listKey="workPhotos"
           />
           <div className="mt-4 flex justify-center">
@@ -281,6 +282,6 @@ export function SiteContent({ copy }: { copy: SiteCopy }) {
       {/* Fixed on mobile only — reserve the space so it never overlaps content */}
       <div className="h-16 sm:hidden" style={{ height: 'calc(4rem + env(safe-area-inset-bottom, 0px))' }} />
       <MobileNav copy={copy} />
-    </>
+    </LightboxProvider>
   )
 }

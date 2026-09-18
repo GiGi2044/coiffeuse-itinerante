@@ -4,7 +4,10 @@ import { useEffect, useRef } from 'react'
 import { ChevronLeftIcon, ChevronRightIcon } from 'lucide-react'
 import { RemoveListItemButton } from '@/components/admin/ListControls'
 import { EditableImage } from '@/components/EditableImage'
+import { useEditMode } from '@/lib/edit-mode'
 import type { ListKey } from '@/lib/edit-mode'
+import { useLightbox } from '@/lib/lightbox'
+import { cn } from '@/lib/utils'
 
 interface CarouselItem {
   id: string
@@ -37,12 +40,14 @@ interface ImageCarouselProps {
 export function ImageCarousel({
   items,
   cardClassName = 'w-64 shrink-0 sm:w-80',
-  imageClassName = 'aspect-square w-full rounded-lg object-cover',
+  imageClassName = 'aspect-square w-full object-cover',
   listKey,
 }: ImageCarouselProps) {
   const scrollerRef = useRef<HTMLDivElement>(null)
   const markerRef = useRef<HTMLDivElement>(null)
   const setWidthRef = useRef(0)
+  const { editable } = useEditMode()
+  const { open } = useLightbox()
 
   function measureAndCenter() {
     const el = scrollerRef.current
@@ -86,7 +91,12 @@ export function ImageCarousel({
     <div className="relative">
       <div ref={scrollerRef} className="no-scrollbar -mx-4 flex gap-4 overflow-x-auto px-4 pb-2">
         {items.map((item) => (
-          <div key={`before-${item.id}`} data-carousel-cell aria-hidden className={cardClassName}>
+          <div
+            key={`before-${item.id}`}
+            data-carousel-cell
+            aria-hidden
+            className={cn('overflow-hidden rounded-lg', cardClassName)}
+          >
             <EditableImage name={item.name} alt="" className={imageClassName} />
           </div>
         ))}
@@ -95,14 +105,34 @@ export function ImageCarousel({
             key={`real-${item.id}`}
             ref={i === 0 ? markerRef : undefined}
             data-carousel-cell
-            className={`group relative ${cardClassName}`}
+            className={cn('group relative overflow-hidden rounded-lg', cardClassName)}
           >
-            <EditableImage name={item.name} alt={item.alt} className={imageClassName} />
+            {editable ? (
+              <EditableImage name={item.name} alt={item.alt} className={imageClassName} />
+            ) : (
+              <button
+                type="button"
+                aria-label={`Agrandir : ${item.alt}`}
+                onClick={() => open({ src: `/content-images/${item.name}`, alt: item.alt })}
+                className="block h-full w-full cursor-zoom-in"
+              >
+                <EditableImage
+                  name={item.name}
+                  alt={item.alt}
+                  className={cn(imageClassName, 'transition-transform duration-300 group-hover:scale-110')}
+                />
+              </button>
+            )}
             {listKey && <RemoveListItemButton list={listKey} id={item.id} />}
           </div>
         ))}
         {items.map((item) => (
-          <div key={`after-${item.id}`} data-carousel-cell aria-hidden className={cardClassName}>
+          <div
+            key={`after-${item.id}`}
+            data-carousel-cell
+            aria-hidden
+            className={cn('overflow-hidden rounded-lg', cardClassName)}
+          >
             <EditableImage name={item.name} alt="" className={imageClassName} />
           </div>
         ))}
