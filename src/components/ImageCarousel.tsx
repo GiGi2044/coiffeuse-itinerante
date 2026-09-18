@@ -55,13 +55,27 @@ export function ImageCarousel({
     if (!el || !marker) return
     const setWidth = marker.getBoundingClientRect().left - el.getBoundingClientRect().left + el.scrollLeft
     setWidthRef.current = setWidth
-    if (setWidth > 0) el.scrollLeft = setWidth
+    if (setWidth > 0) {
+      el.scrollLeft = setWidth
+      // A scrollLeft set on the very first paint can leave hit-testing on
+      // stale coordinates in some browsers — clicks/hover land on nothing
+      // until a real scroll forces recomputation. Force a synchronous
+      // reflow right after so the browser recalculates hit regions now,
+      // not on the visitor's first interaction.
+      void el.offsetHeight
+    }
   }
 
   useEffect(() => {
-    measureAndCenter()
+    // Defer past the first paint so layout (card widths, image aspect
+    // boxes) is fully settled before we measure and jump scrollLeft —
+    // measuring too early is what left hit-testing stale in the first place.
+    const raf = requestAnimationFrame(measureAndCenter)
     window.addEventListener('resize', measureAndCenter)
-    return () => window.removeEventListener('resize', measureAndCenter)
+    return () => {
+      cancelAnimationFrame(raf)
+      window.removeEventListener('resize', measureAndCenter)
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [items])
 
