@@ -70,10 +70,9 @@ export function ServiceAreaMap() {
         fillOpacity: 0.15,
       }).addTo(map)
 
-      // Frame the circle with breathing room, then zoom in one extra level so
-      // it starts a bit larger/closer than a bare fitBounds would leave it.
+      // Frame the whole circle with breathing room — no extra zoom on top,
+      // the full radius needs to stay in view.
       map.fitBounds(area.getBounds(), { padding: [32, 32] })
-      map.zoomIn(1)
     })
 
     return () => {
