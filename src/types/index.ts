@@ -35,6 +35,7 @@ export interface SiteCopy {
   headingMaVie: string
   headingTarifs: string
   headingHoraires: string
+  headingZone: string
   headingContact: string
   navAbout: string
   navTarifs: string

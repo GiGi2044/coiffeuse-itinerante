@@ -4,6 +4,7 @@ import { EditableImage } from '@/components/EditableImage'
 import { GuardedLink } from '@/components/GuardedLink'
 import { ImageCarousel } from '@/components/ImageCarousel'
 import { MobileNav } from '@/components/MobileNav'
+import { ServiceAreaMap } from '@/components/ServiceAreaMap'
 import { buttonVariants } from '@/lib/button-variants'
 import { LightboxProvider } from '@/lib/lightbox'
 import { JOURS } from '@/lib/site-data'
@@ -264,8 +265,20 @@ export function SiteContent({ copy }: { copy: SiteCopy }) {
         </div>
       </section>
 
-      {/* Contact */}
-      <section id="contact" className="scroll-mt-20 px-4 py-20 sm:px-6 sm:py-28">
+      {/* Zone de déplacement — plain base panel (alternates against Horaires/Contact) */}
+      <section className="px-4 py-20 sm:px-6 sm:py-28">
+        <div className="mx-auto max-w-2xl">
+          <SectionHeading>
+            <EditableCopy copyKey="headingZone" value={copy.headingZone} />
+          </SectionHeading>
+          <div className="mt-10">
+            <ServiceAreaMap />
+          </div>
+        </div>
+      </section>
+
+      {/* Contact — alternates with a deeper faded-pink panel */}
+      <section id="contact" className="scroll-mt-20 border-y border-border bg-secondary px-4 py-20 sm:px-6 sm:py-28">
         <div className="mx-auto max-w-xl text-center">
           <SectionHeading>
             <EditableCopy copyKey="headingContact" value={copy.headingContact} />
