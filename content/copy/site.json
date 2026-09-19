@@ -1,13 +1,13 @@
 {
   "heroTagline": "Coiffeuse itinérante — je me déplace chez vous, à Fribourg et Sarine.",
-  "aboutParcours": "Je m’appelle Patricia et cela fait presque 20 ans que je vais de foyer en foyer pour prendre soin des gens chez eux.\nJe propose des coupes, brushings et shampoings énergiques, toujours accompagnés d’un massage relaxant adapté aux besoins et envies de chacun.",
+  "aboutParcours": "Je m’appelle Patricia et cela fait plus de 10 ans que je vais de foyer en foyer pour prendre soin des gens chez eux.\nJe propose des coupes, brushings et shampoings énergiques, toujours accompagnés d’un massage relaxant adapté aux besoins et envies de chacun.",
   "aboutNaturelle": "Je viens avec tout mon matériel, même si la salle de bain est petite ! J’utilise des produits naturels et écologiques (95-98%) de la marque TogetHair, à la phytokératine pour brillance et protection.\nTous les soins sont aussi disponibles à la vente avec mes conseils.",
   "aboutHumain": "J’accorde une grande importance à l’écoute et au lien humain. Entre rires, taquineries ou moments plus graves, je suis là avec douceur, humour et présence.\nMon objectif : un moment de détente sincère et une coiffure qui vous ressemble.",
   "tarifAnnulation": "Annulation moins de 24h à l'avance : CHF 50.-",
   "horaireMatin": "9h – 12h00",
   "horaireApresMidi": "14h– 18h30",
   "horaireZone": "Fribourg et district de La Sarine.",
-  "horaireNote": "En dehors de ces horaires, je ne réponds pas aux messages mais un gentil répondeur attend votre message afin que je vous rappelle dans les meilleurs délais. Merci de votre compréhension.",
+  "horaireNote": "En dehors de ces horaires, je ne réponds pas aux messages mais un gentil répondeur attend votre message afin que je vous rappelle dans les meilleurs délais.",
   "contactName": "Patricia Beuret",
   "contactBusiness": "Coupe à tout f'HAIR",
   "contactAddress": "1720 Corminboeuf",
@@ -119,6 +119,12 @@
       "id": "work-5",
       "name": "equipment.jpg",
       "alt": "Le matériel mobile de Patricia — bac de lavage et chariot qu'elle amène chez vous"
+    }
+  ],
+  "horaireExtraNotes": [
+    {
+      "id": "49e3aadf-2f6a-4bdf-8b8a-46d2067856f1",
+      "text": "Merci de votre compréhension."
     }
   ]
 }
