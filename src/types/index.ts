@@ -36,6 +36,7 @@ export interface SiteCopy {
   headingTarifs: string
   headingHoraires: string
   headingZone: string
+  zoneNote: string
   headingContact: string
   navAbout: string
   navTarifs: string

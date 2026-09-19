@@ -284,6 +284,12 @@ export function SiteContent({ copy }: { copy: SiteCopy }) {
           <div className="mt-10">
             <ServiceAreaMap />
           </div>
+          <EditableCopy
+            as="p"
+            copyKey="zoneNote"
+            value={copy.zoneNote}
+            className="mt-4 block text-center text-sm text-muted-foreground"
+          />
         </div>
       </section>
 
