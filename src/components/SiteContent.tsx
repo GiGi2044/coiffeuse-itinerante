@@ -286,21 +286,30 @@ export function SiteContent({ copy }: { copy: SiteCopy }) {
         </div>
       </section>
 
-      {/* Contact — alternates with a deeper faded-pink panel */}
-      <section id="contact" className="scroll-mt-20 border-y border-border bg-secondary px-4 py-20 sm:px-6 sm:py-28">
+      {/* Vos Retours — hidden on the public page until reviews exist (see
+          ReviewsSection); alternates with a deeper faded-pink panel, taking
+          the slot Contact used to occupy in the alternation */}
+      <ReviewsSection heading={copy.headingRetours} reviews={copy.reviews} />
+
+      {/* Contact — dark panel matching the footer (bg-foreground/text-background),
+          so Contact and the footer read as one closing block. Keeps its own
+          top hairline (rather than relying on Reviews' bottom border) so
+          Zone/Contact still separate visually if Reviews ever goes back to
+          empty and hides itself. */}
+      <section id="contact" className="scroll-mt-20 border-t border-border bg-foreground px-4 py-20 text-background sm:px-6 sm:py-28">
         <div className="mx-auto max-w-xl text-center">
-          <SectionHeading>
+          <SectionHeading invert>
             <EditableCopy copyKey="headingContact" value={copy.headingContact} />
           </SectionHeading>
           <div className="mt-10 space-y-2 text-sm">
-            <EditableCopy as="p" copyKey="contactName" value={copy.contactName} className="block font-medium text-foreground" />
-            <p className="text-muted-foreground">
+            <EditableCopy as="p" copyKey="contactName" value={copy.contactName} className="block font-medium text-background" />
+            <p className="text-background/70">
               <EditableCopy copyKey="contactBusiness" value={copy.contactBusiness} />
               <br />
               <EditableCopy copyKey="contactAddress" value={copy.contactAddress} />
             </p>
             <p>
-              <span className="font-medium text-foreground">Téléphone : </span>
+              <span className="font-medium text-background">Téléphone : </span>
               <GuardedLink href={telHref} className="text-primary hover:underline">
                 <EditableCopy copyKey="contactPhone" value={copy.contactPhone} />
               </GuardedLink>
@@ -308,10 +317,6 @@ export function SiteContent({ copy }: { copy: SiteCopy }) {
           </div>
         </div>
       </section>
-
-      {/* Vos Retours — hidden on the public page until reviews exist (see
-          ReviewsSection); plain base panel (alternates against Contact) */}
-      <ReviewsSection heading={copy.headingRetours} reviews={copy.reviews} />
 
       {/* Footer */}
       <footer className="border-t border-border bg-foreground px-4 py-8 pb-[calc(2rem+env(safe-area-inset-bottom,0px))] text-center text-sm text-background sm:pb-8">

@@ -1,6 +1,6 @@
 'use client'
 
-import { useRef } from 'react'
+import { useEffect, useRef } from 'react'
 import { ChevronLeftIcon, ChevronRightIcon, MessageSquareIcon, StarIcon } from 'lucide-react'
 import { AddListItemButton, RemoveListItemButton } from '@/components/admin/ListControls'
 import { EditableCopy } from '@/components/EditableCopy'
@@ -23,14 +23,14 @@ function StarRating({ id, rating }: { id: string; rating: number }) {
 
   if (!editable) {
     return (
-      <div className="flex gap-0.5" role="img" aria-label={`${rating} sur 5 étoiles`}>
+      <div className="flex shrink-0 gap-0.5" role="img" aria-label={`${rating} sur 5 étoiles`}>
         {[1, 2, 3, 4, 5].map(star)}
       </div>
     )
   }
 
   return (
-    <div className="flex gap-0.5">
+    <div className="flex shrink-0 gap-0.5">
       {[1, 2, 3, 4, 5].map((n) => (
         <button
           key={n}
@@ -46,6 +46,33 @@ function StarRating({ id, rating }: { id: string; rating: number }) {
   )
 }
 
+// Card contents shared by all three passes below (clone / real / clone) —
+// fixed height so cards line up regardless of review length; a long review
+// scrolls inside its own card instead of stretching every card in the row
+// to match the tallest one.
+function ReviewCardBody({ review }: { review: Review }) {
+  return (
+    <>
+      <StarRating id={review.id} rating={review.rating} />
+      <div className="mt-3 min-h-0 flex-1 overflow-y-auto pr-1">
+        <EditableCopy
+          as="p"
+          value={review.text}
+          listTarget={{ list: 'reviews', id: review.id, field: 'text' }}
+          multiline
+          className="block text-sm leading-relaxed text-muted-foreground"
+        />
+      </div>
+      <p className="mt-3 shrink-0 text-sm font-medium text-foreground">
+        — <EditableCopy value={review.author} listTarget={{ list: 'reviews', id: review.id, field: 'author' }} />
+      </p>
+    </>
+  )
+}
+
+const CARD_CLASS =
+  'group relative flex h-64 w-72 shrink-0 snap-start flex-col rounded-lg border border-border bg-card p-6 sm:w-80'
+
 // Hidden entirely on the public page until Patricia adds a first review — a
 // "0 avis" panel would look worse than no section at all for real visitors.
 // In the admin editor it always shows, with a designed empty state prompting
@@ -53,11 +80,50 @@ function StarRating({ id, rating }: { id: string; rating: number }) {
 export function ReviewsSection({ heading, reviews }: { heading: string; reviews: Review[] }) {
   const { editable } = useEditMode()
   const scrollerRef = useRef<HTMLDivElement>(null)
+  const markerRef = useRef<HTMLDivElement>(null)
+  const setWidthRef = useRef(0)
+
+  // Infinite loop, same technique as ImageCarousel: the review list is
+  // rendered three times back-to-back (clone, real set, clone), starting
+  // scrolled to the real set in the middle — so left/right never hit a dead
+  // end no matter how many times they're pressed.
+  function measureAndCenter() {
+    const el = scrollerRef.current
+    const marker = markerRef.current
+    if (!el || !marker) return
+    const setWidth = marker.getBoundingClientRect().left - el.getBoundingClientRect().left + el.scrollLeft
+    setWidthRef.current = setWidth
+    if (setWidth > 0) {
+      el.scrollLeft = setWidth
+      void el.offsetHeight
+    }
+  }
+
+  useEffect(() => {
+    const raf = requestAnimationFrame(measureAndCenter)
+    window.addEventListener('resize', measureAndCenter)
+    return () => {
+      cancelAnimationFrame(raf)
+      window.removeEventListener('resize', measureAndCenter)
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [reviews])
+
+  useEffect(() => {
+    const el = scrollerRef.current
+    if (!el) return
+    function onScroll() {
+      const setWidth = setWidthRef.current
+      if (!el || setWidth <= 0) return
+      if (el.scrollLeft < setWidth) el.scrollLeft += setWidth
+      else if (el.scrollLeft >= setWidth * 2) el.scrollLeft -= setWidth
+    }
+    el.addEventListener('scroll', onScroll, { passive: true })
+    return () => el.removeEventListener('scroll', onScroll)
+  }, [])
+
   if (reviews.length === 0 && !editable) return null
 
-  // Manual scroll only (no autoplay, per design rules) — same native
-  // scroll-snap technique as ImageCarousel, just without its infinite-loop
-  // clones (a handful of text cards doesn't need that trick).
   function nudge(direction: 1 | -1) {
     const el = scrollerRef.current
     if (!el) return
@@ -66,7 +132,7 @@ export function ReviewsSection({ heading, reviews }: { heading: string; reviews:
   }
 
   return (
-    <section id="avis" className="scroll-mt-20 px-4 py-20 sm:px-6 sm:py-28">
+    <section id="avis" className="scroll-mt-20 border-y border-border bg-secondary px-4 py-20 sm:px-6 sm:py-28">
       <div className="mx-auto max-w-5xl">
         <SectionHeading>
           <EditableCopy copyKey="headingRetours" value={heading} />
@@ -89,27 +155,24 @@ export function ReviewsSection({ heading, reviews }: { heading: string; reviews:
                 className="no-scrollbar -mx-4 flex snap-x snap-mandatory gap-4 overflow-x-auto px-4 pb-2"
               >
                 {reviews.map((review) => (
+                  <div key={`before-${review.id}`} data-review-card aria-hidden className={CARD_CLASS}>
+                    <ReviewCardBody review={review} />
+                  </div>
+                ))}
+                {reviews.map((review, i) => (
                   <div
-                    key={review.id}
+                    key={`real-${review.id}`}
+                    ref={i === 0 ? markerRef : undefined}
                     data-review-card
-                    className="group relative w-72 shrink-0 snap-start rounded-lg border border-border bg-card p-6 sm:w-80"
+                    className={CARD_CLASS}
                   >
                     <RemoveListItemButton list="reviews" id={review.id} />
-                    <StarRating id={review.id} rating={review.rating} />
-                    <EditableCopy
-                      as="p"
-                      value={review.text}
-                      listTarget={{ list: 'reviews', id: review.id, field: 'text' }}
-                      multiline
-                      className="mt-4 block text-sm leading-relaxed text-muted-foreground"
-                    />
-                    <p className="mt-4 text-sm font-medium text-foreground">
-                      —{' '}
-                      <EditableCopy
-                        value={review.author}
-                        listTarget={{ list: 'reviews', id: review.id, field: 'author' }}
-                      />
-                    </p>
+                    <ReviewCardBody review={review} />
+                  </div>
+                ))}
+                {reviews.map((review) => (
+                  <div key={`after-${review.id}`} data-review-card aria-hidden className={CARD_CLASS}>
+                    <ReviewCardBody review={review} />
                   </div>
                 ))}
               </div>
