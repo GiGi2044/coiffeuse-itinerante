@@ -57,11 +57,6 @@
   ],
   "carouselItems": [
     {
-      "id": "carousel-5",
-      "name": "carousel-5.jpg",
-      "alt": "TogetHair H-Force — complément alimentaire capillaire"
-    },
-    {
       "id": "carousel-6",
       "name": "carousel-6.jpg",
       "alt": "TogetHair Chromacare — shampoing protecteur pour cheveux colorés"
@@ -70,16 +65,6 @@
       "id": "carousel-7",
       "name": "carousel-7.jpg",
       "alt": "TogetHair Equilibrium — shampoing anti-pelliculaire"
-    },
-    {
-      "id": "carousel-8",
-      "name": "carousel-8.jpg",
-      "alt": "TogetHair Nutriplenia — shampoing nourrissant pour cheveux secs"
-    },
-    {
-      "id": "carousel-9",
-      "name": "carousel-9.jpg",
-      "alt": "TogetHair Pure — shampoing pour cheveux naturels"
     },
     {
       "id": "carousel-10",
