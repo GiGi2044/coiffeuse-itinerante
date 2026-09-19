@@ -24,6 +24,11 @@ export function AdminEditor({ initialCopy }: { initialCopy: SiteCopy }) {
   const [dirty, setDirty] = useState(false)
   const [applying, setApplying] = useState(false)
   const [refreshing, setRefreshing] = useState(false)
+  // Snapshot of the content exactly as this tab loaded it — compared against
+  // the live file right before Apply, so a tab left open across someone
+  // else's edit (or a deploy that added new fields) gets caught and refuses
+  // to save, instead of silently overwriting whatever changed since.
+  const [baseline] = useState(() => JSON.stringify(initialCopy))
 
   function setText(key: keyof SiteCopy, value: string) {
     setDraftCopy((prev) => ({ ...prev, [key]: value }))
@@ -96,6 +101,29 @@ export function AdminEditor({ initialCopy }: { initialCopy: SiteCopy }) {
     if (!dirty || applying) return
     setApplying(true)
     try {
+      // Refuse to overwrite if the live file no longer matches what this tab
+      // started from — someone else applied a change, or a deploy added new
+      // fields this tab's in-memory draft doesn't know about. Saving anyway
+      // would silently drop whatever changed. Fails open (lets the save
+      // proceed) only if this check itself can't be completed, so a network
+      // hiccup here never blocks a real edit.
+      const liveCheck = await fetch(`/api/admin/content?path=${encodeURIComponent(COPY_PATH)}`).catch(
+        () => null
+      )
+      if (liveCheck?.ok) {
+        const liveBody = (await liveCheck.json().catch(() => null)) as { content?: string } | null
+        if (liveBody?.content) {
+          const liveNormalized = JSON.stringify(JSON.parse(liveBody.content))
+          if (liveNormalized !== baseline) {
+            toast.error(
+              'Le contenu a changé ailleurs depuis l\'ouverture de cette page — rechargez avant d\'appliquer, pour ne pas écraser ces changements.',
+              { duration: 10000 }
+            )
+            return
+          }
+        }
+      }
+
       const putCopy = await fetch('/api/admin/content', {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
