@@ -40,6 +40,7 @@ export interface SiteCopy {
   navAbout: string
   navTarifs: string
   navHoraires: string
+  navZone: string
   navContact: string
   ctaContact: string
   ctaTarifs: string

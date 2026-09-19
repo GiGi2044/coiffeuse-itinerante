@@ -46,6 +46,9 @@ export function SiteContent({ copy }: { copy: SiteCopy }) {
             <GuardedLink href="#horaires" className="hover:text-foreground">
               <EditableCopy copyKey="navHoraires" value={copy.navHoraires} />
             </GuardedLink>
+            <GuardedLink href="#zone" className="hover:text-foreground">
+              <EditableCopy copyKey="navZone" value={copy.navZone} />
+            </GuardedLink>
           </nav>
           <GuardedLink href="#contact" className={cn(buttonVariants({ variant: 'default' }), 'h-9 px-4')}>
             <EditableCopy copyKey="ctaContact" value={copy.ctaContact} />
@@ -266,7 +269,7 @@ export function SiteContent({ copy }: { copy: SiteCopy }) {
       </section>
 
       {/* Zone de déplacement — plain base panel (alternates against Horaires/Contact) */}
-      <section className="px-4 py-20 sm:px-6 sm:py-28">
+      <section id="zone" className="scroll-mt-20 px-4 py-20 sm:px-6 sm:py-28">
         <div className="mx-auto max-w-2xl">
           <SectionHeading>
             <EditableCopy copyKey="headingZone" value={copy.headingZone} />

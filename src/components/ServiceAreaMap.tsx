@@ -3,10 +3,22 @@
 import { useEffect, useRef } from 'react'
 import 'leaflet/dist/leaflet.css'
 
-// Patricia's base (Corminboeuf, FR) — geocoded via Nominatim.
-const CENTER: [number, number] = [46.8116318, 7.1052486]
-const RADIUS_METERS = 12_000
-const ZOOM = 10
+// Patricia's actual coverage area — not a radius, a specific set of towns she
+// travels to (everything east of Fribourg is explicitly excluded, and Payerne
+// is too far west). Ordered to trace a simple ring around the area (sorted by
+// angle from the centroid): Lentigny (W) → Gibloux (SW) → Rossens (SW) →
+// La Roche (S) → Le Mouret (S/SE) → Fribourg (E boundary) → Courtepin (N) →
+// Grolley (NW) → back to Lentigny. All geocoded via Nominatim.
+const AREA: [number, number][] = [
+  [46.7595292, 7.0037236], // Lentigny
+  [46.6841642, 7.0402724], // Gibloux
+  [46.7204051, 7.103161], // Rossens (FR)
+  [46.6966582, 7.1393476], // La Roche
+  [46.7487136, 7.1718165], // Le Mouret
+  [46.8055656, 7.1612669], // Fribourg
+  [46.8660381, 7.1228659], // Courtepin
+  [46.8355689, 7.0672555], // Grolley
+]
 
 // Client-only: Leaflet reaches for `window`/`document` at import time, so it
 // can never run during server render — the map is built in a useEffect
@@ -26,8 +38,6 @@ export function ServiceAreaMap() {
       if (cancelled || !containerRef.current || mapRef.current) return
 
       const map = L.map(containerRef.current, {
-        center: CENTER,
-        zoom: ZOOM,
         scrollWheelZoom: false,
       })
       mapRef.current = map
@@ -37,14 +47,17 @@ export function ServiceAreaMap() {
         maxZoom: 19,
       }).addTo(map)
 
-      L.circle(CENTER, {
-        radius: RADIUS_METERS,
+      const area = L.polygon(AREA, {
         color: '#a8617a',
         weight: 2,
         opacity: 0.6,
         fillColor: '#a8617a',
         fillOpacity: 0.15,
       }).addTo(map)
+
+      // Frame the shape with generous breathing room, rather than a fixed
+      // center/zoom — adapts automatically if the town list ever changes.
+      map.fitBounds(area.getBounds(), { padding: [32, 32] })
     })
 
     return () => {
@@ -59,7 +72,7 @@ export function ServiceAreaMap() {
       ref={containerRef}
       className="h-80 w-full overflow-hidden rounded-lg border border-border sm:h-96"
       role="img"
-      aria-label="Carte de la zone de déplacement de Patricia, un rayon d'environ 12 km autour de Corminboeuf"
+      aria-label="Carte de la zone de déplacement de Patricia : Fribourg, Le Mouret, La Roche, Rossens, Gibloux, Lentigny, Grolley et Courtepin"
     />
   )
 }
