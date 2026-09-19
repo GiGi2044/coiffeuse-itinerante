@@ -2,7 +2,7 @@
 
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
-import { Loader2Icon } from 'lucide-react'
+import { Loader2Icon, RefreshCwIcon } from 'lucide-react'
 import { toast } from 'sonner'
 import { AssistantPane } from '@/components/admin/AssistantPane'
 import { Button } from '@/components/ui/button'
@@ -23,6 +23,7 @@ export function AdminEditor({ initialCopy }: { initialCopy: SiteCopy }) {
   const [pendingImages, setPendingImages] = useState<Map<string, string>>(new Map())
   const [dirty, setDirty] = useState(false)
   const [applying, setApplying] = useState(false)
+  const [refreshing, setRefreshing] = useState(false)
 
   function setText(key: keyof SiteCopy, value: string) {
     setDraftCopy((prev) => ({ ...prev, [key]: value }))
@@ -128,6 +129,26 @@ export function AdminEditor({ initialCopy }: { initialCopy: SiteCopy }) {
     }
   }
 
+  // Escape hatch for content that changed outside this editor (a manual git
+  // push, or another browser tab's Apply landing after this page loaded) —
+  // busts the cached content tag, then hard-reloads so this component
+  // re-mounts with genuinely fresh initialCopy (a soft router.refresh()
+  // wouldn't touch draftCopy, since useState only reads its initializer once).
+  async function refreshContent() {
+    if (dirty || refreshing) return
+    setRefreshing(true)
+    try {
+      const res = await fetch('/api/admin/content/revalidate', { method: 'POST' })
+      if (!res.ok) {
+        toast.error('Impossible de rafraîchir le contenu')
+        return
+      }
+      window.location.reload()
+    } finally {
+      setRefreshing(false)
+    }
+  }
+
   return (
     <EditModeProvider value={{ editable: true, setText, setImage, setListField, addListItem, removeListItem }}>
       <div className="grid lg:grid-cols-[1fr_340px] lg:items-start lg:gap-8">
@@ -154,6 +175,17 @@ export function AdminEditor({ initialCopy }: { initialCopy: SiteCopy }) {
                 ? 'Modifications non appliquées'
                 : 'Cliquez un texte ou une photo sur la page pour la modifier.'}
             </p>
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={() => void refreshContent()}
+              disabled={dirty || refreshing}
+              className="mt-3 w-full"
+              title={dirty ? 'Appliquez ou annulez vos modifications avant de rafraîchir' : undefined}
+            >
+              <RefreshCwIcon data-icon="inline-start" className={refreshing ? 'animate-spin' : undefined} />
+              Actualiser le contenu en direct
+            </Button>
           </div>
 
           <div className="mt-6 rounded-xl border border-border bg-card p-5">
