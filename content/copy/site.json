@@ -116,5 +116,174 @@
       "text": "Merci de votre compréhension."
     }
   ],
-  "reviews": []
+  "reviews": [
+    {
+      "id": "review-nadia-clement",
+      "author": "Nadia Clément",
+      "rating": 5,
+      "text": "Je tiens à partager mon expérience exceptionnelle avec Patricia, ma coiffeuse à domicile. Dès mon premier rendez-vous, j'ai été impressionnée par son professionnalisme et son expertise. Elle prend le temps d'écouter mes envies et de me conseiller.\n\nEn plus de ses compétences techniques irréprochables, elle est vraiment sympathique et crée une atmosphère détendue et conviviale. C'est toujours un plaisir de passer du temps avec elle !\n\nJe la recommande vivement à tous ceux qui recherchent une coiffeuse à domicile de confiance. Merci encore pour ton excellent travail !"
+    },
+    {
+      "id": "review-amanda-casagrande",
+      "author": "Amanda Casagrande",
+      "rating": 5,
+      "text": "Patricia propose un service irréprochable autant dans la coiffure que dans le temps qu'elle prend avec chaque personne peu importe l'âge. Elle est douce et à l'écoute de chacun. Elle accorde une grande importance aux partages qu'elle vit avec toutes les personnes. Autant vous dire que les personnes âgées sont absolument ravies lorsque Patricia sonne à la porte pour les embellir mais aussi papoter ♥️ Faites lui confiance les yeux fermés!"
+    },
+    {
+      "id": "review-julia-etpatrick",
+      "author": "julia etpatrick",
+      "rating": 5,
+      "text": "Patricia est une professionnelle hors pair. Au delà de son métier de coiffeuse, elle vous fera la causette et vous apportera le rayon de soleil qui illuminera votre journée.\nAu final après une nouvelle coupe (pour l'extérieur), elle vous fera du bien à l'intérieur de votre tête.\nAllez-y les yeux fermés."
+    },
+    {
+      "id": "review-marylene-minguely",
+      "author": "Marylène Minguely",
+      "rating": 5,
+      "text": "Patricia est une coiffeuse exceptionnelle ! Toujours à l'écoute, professionnelle et passionnée, elle sait sublimer chaque coupe en s'adaptant parfaitement aux envies de ses clients. Un service au top, directement chez vous !"
+    },
+    {
+      "id": "review-hafssoit-oussoufa",
+      "author": "Hafssoit Oussoufa",
+      "rating": 5,
+      "text": "Patricia est incroyablement rapide, efficace, professionnelle et très compréhensive. Elle vient à domicile pour couper les cheveux de ma fille qui a des besoins spécifiques. Nous sommes toujours très contents du résultat!!!"
+    },
+    {
+      "id": "review-michael-sallin",
+      "author": "Michaël Sallin",
+      "rating": 5,
+      "text": "Notre fils ne connaît qu'une coiffeuse depuis sa toute première coupe: Patricia! Amicale, efficace et organisation simple des rdv à domicile. Nous la remercions chaleureusement!"
+    },
+    {
+      "id": "review-laurence-bally",
+      "author": "Laurence Bally",
+      "rating": 5,
+      "text": "Cela fait des années que je « confie ma tête » à Patricia. Elle sait trouver la coupe qui convient tout en étant à l'écoute, et a un bon coup de ciseaux. Mais ce n'est pas tout. Elle est profondément humaine et ne prend pas soin que de vos cheveux. Attentive et attentionnée, elle a toujours des choses intéressantes à raconter. En plus, elle accorde une grande importance à l'écologie dans le cadre de son métier. Bref, l'assurance de passer un bon moment en sa compagnie. Avec Patricia, vous ne serez pas déçus!"
+    },
+    {
+      "id": "review-melanie-richard",
+      "author": "Mélanie Richard",
+      "rating": 5,
+      "text": "Bonjour Patricia,\n\nJe viens vers vous de la part de ma grand maman, 84 ans, (qui n'a pas Facebook et qui ne peut pas se déplacer) dont vous prenez soin, à son domicile, depuis plusieurs années déjà.\n\nToujours coquette, elle adore la façon dont vous prenez soin d'elle. Votre douceur et votre sourire ont su la convaincre.\n\nElle apprécie aussi énormément le fait que vous preniez même vos serviettes de toilettes, de cette façon elle n'a qu'à apprécier le moment et ne pensez à rien d'autre.\n\nElle vous recommande sans aucune hésitation.\n\nMerci pour tout ça.\n\nMélanie"
+    },
+    {
+      "id": "review-laure-laederach",
+      "author": "Laure Laederach",
+      "rating": 5,
+      "text": "Patricia est formidable 🤩 Je lui ai donné \"carte blanche\" et je suis ravie du résultat. Je la recommande fortement 👍👍"
+    },
+    {
+      "id": "review-gemma-alfaro-luque",
+      "author": "Gemma Alfaro Luque",
+      "rating": 5,
+      "text": "Patricia est une personne à qui tu peux faire confiance 🙏. Toujours avec le sourire, avec gentillese, elle se donne à coeur ❤️ merci!"
+    },
+    {
+      "id": "review-adrienne-berger",
+      "author": "Adrienne Berger",
+      "rating": 5,
+      "text": "Super coiffeuse ! Elle coupe les cheveux de mon fils depuis ses 1 an et demi... Douce et efficace... Elle est top avec les enfants !"
+    },
+    {
+      "id": "review-valentine-de-reynier",
+      "author": "Valentine de Reynier",
+      "rating": 5,
+      "text": "Enchantée par les services de Patricia qui me coiffe depuis...30 ans!!! Efficace, rapide, enthousiaste et à l'écoute. Un vrai bonheur!"
+    },
+    {
+      "id": "review-jean-luc-dessibourg",
+      "author": "jean-luc dessibourg",
+      "rating": 5,
+      "text": "Super génial le service de Patricia à domicile ! Elle coupe très bien, est très sympathique, met les gens à l'aise et son prix est très correct . Merci Patricia !"
+    },
+    {
+      "id": "review-michele-berclaz",
+      "author": "Michèle Berclaz",
+      "rating": 5,
+      "text": "Travail bien fait et dans la bonne humeur.\nPrix tout à fait raisonnable.\nArrive à l'heure au rendez-vous.\nFaites confiance à Patricia !"
+    },
+    {
+      "id": "review-agnes-huber",
+      "author": "Agnès Huber",
+      "rating": 5,
+      "text": "Elle est top. Elle a pris soin de ma vieille maman durant plusieurs années. Sa venue est une source de plaisir et de réconfort. Merci"
+    },
+    {
+      "id": "review-severine-sooriah",
+      "author": "Severine Sooriah",
+      "rating": 5,
+      "text": "Je recommande vivement ma coiffeuse depuis plus de 16 ans. Elle est toujours aux petits soins pour répondre à nos désirs et à notre écoute avec beaucoup de bienveillance."
+    },
+    {
+      "id": "review-caroline-dumont",
+      "author": "Caroline Dumont",
+      "rating": 5,
+      "text": "Ma Maman a \"testé\" en étant hospitalisée à Payerne. Très contente. Elle a d'ailleurs refait appel à cette dame très sympathique maintenant qu'elle est dans un home pour un court séjour."
+    },
+    {
+      "id": "review-yann-enges",
+      "author": "Yann Enges",
+      "rating": 5,
+      "text": "Je suis fidèle à ses ciseau depuis plusieurs années, très pro et très sympathique, Je vous recommande."
+    },
+    {
+      "id": "review-leibzig-didier",
+      "author": "Leibzig Didier",
+      "rating": 5,
+      "text": "Une personne adorable, flexible, généreuse et positive. Je recommande les yeux fermés."
+    },
+    {
+      "id": "review-julie-beuret",
+      "author": "Julie Beuret",
+      "rating": 5,
+      "text": "Service toujours au top grâce à son professionnalisme et sa bienveillance. Je recommande vivement!"
+    },
+    {
+      "id": "review-alexandra-musy",
+      "author": "Alexandra Musy",
+      "rating": 5,
+      "text": "magnifique moment, nouvelle tête, trop contente ! je recommande Coupe à tout f'HAIR !"
+    },
+    {
+      "id": "review-beatrice-villiger",
+      "author": "Beatrice Villiger",
+      "rating": 5,
+      "text": "La présence de Patricia illumine chaque journée !!"
+    },
+    {
+      "id": "review-myriam-valley",
+      "author": "Myriam Valley",
+      "rating": 5,
+      "text": "Très professionnelle et un super coup de ciseau! Je vous recommande."
+    },
+    {
+      "id": "review-jean-daniel-rizzi",
+      "author": "Jean-Daniel Rizzi",
+      "rating": 5,
+      "text": "Bonne coiffeuse toujours avec le sourire"
+    },
+    {
+      "id": "review-severine-abis",
+      "author": "Séverine Abis",
+      "rating": 5,
+      "text": "1ère expérience avec une coiffeuse à domicile souriante et professionnelle !"
+    },
+    {
+      "id": "review-melodie-evard",
+      "author": "Mélodie evard",
+      "rating": 5,
+      "text": "Coiffeuse à domicile ! Je conseil vivement 🫶🏽"
+    },
+    {
+      "id": "review-vanessa-kirsch",
+      "author": "Vanessa Kirsch",
+      "rating": 5,
+      "text": "Très bien et elle et agréable et super avec les enfants"
+    },
+    {
+      "id": "review-tamara-von-allmen",
+      "author": "Tamara von Allmen",
+      "rating": 5,
+      "text": "Professionnelle, ponctuelle, coupe au top :-) Merci"
+    }
+  ]
 }
