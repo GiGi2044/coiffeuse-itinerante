@@ -44,7 +44,14 @@ export function ServiceAreaMap() {
     void import('leaflet').then((L) => {
       if (cancelled || !containerRef.current || mapRef.current) return
 
+      // Circle/polygon layers need the map to already have a view (center +
+      // zoom) before they can project themselves — getBounds() on a layer
+      // added to a view-less map throws, since it has nothing to project
+      // against yet. Give it a sensible starting view immediately; fitBounds
+      // below then refines it once the circle exists.
       const map = L.map(containerRef.current, {
+        center: CIRCLE_CENTER,
+        zoom: 11,
         scrollWheelZoom: false,
       })
       mapRef.current = map
