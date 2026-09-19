@@ -20,6 +20,31 @@ const AREA: [number, number][] = [
   [46.8355689, 7.0672555], // Grolley
 ]
 
+// Rounds the polygon's sharp corners into a smoother, more organic outline.
+// Each pass replaces every edge with two points 1/4 and 3/4 along it — every
+// output point is a weighted average of two adjacent input points, so the
+// result can only stay inside the original shape's hull, never bulge past it
+// (mathematically guaranteed, not just visually likely) — it can round the
+// area out to towns not explicitly listed, but never extend meaningfully
+// beyond the outermost towns actually given.
+function chaikinSmooth(points: [number, number][], iterations: number): [number, number][] {
+  let pts = points
+  for (let iter = 0; iter < iterations; iter++) {
+    const next: [number, number][] = []
+    const n = pts.length
+    for (let i = 0; i < n; i++) {
+      const [lat0, lon0] = pts[i]
+      const [lat1, lon1] = pts[(i + 1) % n]
+      next.push([lat0 * 0.75 + lat1 * 0.25, lon0 * 0.75 + lon1 * 0.25])
+      next.push([lat0 * 0.25 + lat1 * 0.75, lon0 * 0.25 + lon1 * 0.75])
+    }
+    pts = next
+  }
+  return pts
+}
+
+const SMOOTHED_AREA = chaikinSmooth(AREA, 3)
+
 // Client-only: Leaflet reaches for `window`/`document` at import time, so it
 // can never run during server render — the map is built in a useEffect
 // against a ref, after mount, not during the initial render pass. No marker
@@ -47,7 +72,7 @@ export function ServiceAreaMap() {
         maxZoom: 19,
       }).addTo(map)
 
-      const area = L.polygon(AREA, {
+      const area = L.polygon(SMOOTHED_AREA, {
         color: '#a8617a',
         weight: 2,
         opacity: 0.6,
