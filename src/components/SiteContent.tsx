@@ -93,40 +93,47 @@ export function SiteContent({ copy }: { copy: SiteCopy }) {
           Alternates with a slightly deeper faded-pink panel so each section
           reads as distinct without boxes or shadows. */}
       <section id="about" className="scroll-mt-20 border-y border-border bg-secondary px-4 py-20 sm:px-6 sm:py-28">
-        <div className="mx-auto max-w-2xl">
+        <div className="mx-auto max-w-4xl">
           <SectionHeading>
             <EditableCopy copyKey="headingAbout" value={copy.headingAbout} />
           </SectionHeading>
-          <div className="mt-12 divide-y divide-border">
-            <div className="pb-8">
-              <h3 className="font-display text-lg text-foreground italic">Mon Parcours</h3>
-              <EditableCopy
-                as="p"
-                copyKey="aboutParcours"
-                value={copy.aboutParcours}
-                multiline
-                className="mt-3 block text-sm leading-relaxed text-muted-foreground sm:text-base"
-              />
-            </div>
-            <div className="py-8">
-              <h3 className="font-display text-lg text-foreground italic">Une Coiffure Naturelle</h3>
-              <EditableCopy
-                as="p"
-                copyKey="aboutNaturelle"
-                value={copy.aboutNaturelle}
-                multiline
-                className="mt-3 block text-sm leading-relaxed text-muted-foreground sm:text-base"
-              />
-            </div>
-            <div className="pt-8">
-              <h3 className="font-display text-lg text-foreground italic">Un Moment Humain</h3>
-              <EditableCopy
-                as="p"
-                copyKey="aboutHumain"
-                value={copy.aboutHumain}
-                multiline
-                className="mt-3 block text-sm leading-relaxed text-muted-foreground sm:text-base"
-              />
+          <div className="mt-12 grid gap-10 md:grid-cols-[0.85fr_1.15fr] md:items-start">
+            <EditableImage
+              name="patricia-portrait.jpg"
+              alt="Patricia Beuret"
+              className="aspect-[1142/1600] w-full max-w-sm rounded-2xl object-cover md:max-w-none"
+            />
+            <div className="divide-y divide-border">
+              <div className="pb-8">
+                <h3 className="font-display text-lg text-foreground italic">Mon Parcours</h3>
+                <EditableCopy
+                  as="p"
+                  copyKey="aboutParcours"
+                  value={copy.aboutParcours}
+                  multiline
+                  className="mt-3 block text-sm leading-relaxed text-muted-foreground sm:text-base"
+                />
+              </div>
+              <div className="py-8">
+                <h3 className="font-display text-lg text-foreground italic">Une Coiffure Naturelle</h3>
+                <EditableCopy
+                  as="p"
+                  copyKey="aboutNaturelle"
+                  value={copy.aboutNaturelle}
+                  multiline
+                  className="mt-3 block text-sm leading-relaxed text-muted-foreground sm:text-base"
+                />
+              </div>
+              <div className="pt-8">
+                <h3 className="font-display text-lg text-foreground italic">Un Moment Humain</h3>
+                <EditableCopy
+                  as="p"
+                  copyKey="aboutHumain"
+                  value={copy.aboutHumain}
+                  multiline
+                  className="mt-3 block text-sm leading-relaxed text-muted-foreground sm:text-base"
+                />
+              </div>
             </div>
           </div>
         </div>
