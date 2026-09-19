@@ -19,35 +19,111 @@
   "headingTarifs": "Tarifs",
   "headingHoraires": "Horaires",
   "headingContact": "Contact",
-  "navAbout": "Qui je suis",
+  "navAbout": "Qui suis-je",
   "navTarifs": "Tarifs",
   "navHoraires": "Horaires",
   "navContact": "Contact",
   "ctaContact": "Contactez-moi",
   "ctaTarifs": "Voir les tarifs",
   "tarifs": [
-    { "id": "tarif-dames", "label": "Dames", "price": "CHF 80.- (shampoing, coupe, séchage)" },
-    { "id": "tarif-hommes", "label": "Hommes", "price": "CHF 50.- (shampoing, coupe, séchage)" },
-    { "id": "tarif-tondeuse", "label": "Coupe tondeuse", "price": "CHF 40.-" },
-    { "id": "tarif-enfants", "label": "Enfants", "price": "CHF 25.- jusqu'à 10 ans / CHF 30.- jusqu'à 15 ans" },
-    { "id": "tarif-deplacement", "label": "Supplément déplacement", "price": "CHF 150.- (50-70min de trajet A/R)" },
-    { "id": "tarif-shampoing-sechage", "label": "Shampoing + séchage uniquement", "price": "CHF 45.-" }
+    {
+      "id": "tarif-dames",
+      "label": "Dames",
+      "price": "CHF 80.- (shampoing, coupe, séchage)"
+    },
+    {
+      "id": "tarif-hommes",
+      "label": "Hommes",
+      "price": "CHF 50.- (shampoing, coupe, séchage)"
+    },
+    {
+      "id": "tarif-tondeuse",
+      "label": "Coupe tondeuse",
+      "price": "CHF 40.-"
+    },
+    {
+      "id": "tarif-enfants",
+      "label": "Enfants",
+      "price": "CHF 25.- jusqu'à 10 ans / CHF 30.- jusqu'à 15 ans"
+    },
+    {
+      "id": "tarif-deplacement",
+      "label": "Supplément déplacement",
+      "price": "CHF 150.- (50-70min de trajet A/R)"
+    },
+    {
+      "id": "tarif-shampoing-sechage",
+      "label": "Shampoing + séchage uniquement",
+      "price": "CHF 45.-"
+    }
   ],
   "carouselItems": [
-    { "id": "carousel-5", "name": "carousel-5.jpg", "alt": "TogetHair H-Force — complément alimentaire capillaire" },
-    { "id": "carousel-6", "name": "carousel-6.jpg", "alt": "TogetHair Chromacare — shampoing protecteur pour cheveux colorés" },
-    { "id": "carousel-7", "name": "carousel-7.jpg", "alt": "TogetHair Equilibrium — shampoing anti-pelliculaire" },
-    { "id": "carousel-8", "name": "carousel-8.jpg", "alt": "TogetHair Nutriplenia — shampoing nourrissant pour cheveux secs" },
-    { "id": "carousel-9", "name": "carousel-9.jpg", "alt": "TogetHair Pure — shampoing pour cheveux naturels" },
-    { "id": "carousel-10", "name": "carousel-10.jpg", "alt": "TogetHair Sea Force — shampoing anti-chute" },
-    { "id": "carousel-11", "name": "carousel-11.jpg", "alt": "TogetHair Sebum — shampoing pour cheveux gras et mixtes" },
-    { "id": "carousel-12", "name": "carousel-12.jpg", "alt": "TogetHair Shine Blonde — shampoing anti-jaunissement" }
+    {
+      "id": "carousel-5",
+      "name": "carousel-5.jpg",
+      "alt": "TogetHair H-Force — complément alimentaire capillaire"
+    },
+    {
+      "id": "carousel-6",
+      "name": "carousel-6.jpg",
+      "alt": "TogetHair Chromacare — shampoing protecteur pour cheveux colorés"
+    },
+    {
+      "id": "carousel-7",
+      "name": "carousel-7.jpg",
+      "alt": "TogetHair Equilibrium — shampoing anti-pelliculaire"
+    },
+    {
+      "id": "carousel-8",
+      "name": "carousel-8.jpg",
+      "alt": "TogetHair Nutriplenia — shampoing nourrissant pour cheveux secs"
+    },
+    {
+      "id": "carousel-9",
+      "name": "carousel-9.jpg",
+      "alt": "TogetHair Pure — shampoing pour cheveux naturels"
+    },
+    {
+      "id": "carousel-10",
+      "name": "carousel-10.jpg",
+      "alt": "TogetHair Sea Force — shampoing anti-chute"
+    },
+    {
+      "id": "carousel-11",
+      "name": "carousel-11.jpg",
+      "alt": "TogetHair Sebum — shampoing pour cheveux gras et mixtes"
+    },
+    {
+      "id": "carousel-12",
+      "name": "carousel-12.jpg",
+      "alt": "TogetHair Shine Blonde — shampoing anti-jaunissement"
+    }
   ],
   "workPhotos": [
-    { "id": "work-1", "name": "carousel-1.jpg", "alt": "Patricia et son véhicule équipé" },
-    { "id": "work-2", "name": "carousel-2.jpg", "alt": "Patricia lors d'une coupe à domicile" },
-    { "id": "work-3", "name": "carousel-3.jpg", "alt": "Patricia et son matériel de coiffeuse itinérante" },
-    { "id": "work-4", "name": "carousel-4.jpg", "alt": "Patricia en plein brushing chez une cliente" },
-    { "id": "work-5", "name": "equipment.jpg", "alt": "Le matériel mobile de Patricia — bac de lavage et chariot qu'elle amène chez vous" }
+    {
+      "id": "work-1",
+      "name": "carousel-1.jpg",
+      "alt": "Patricia et son véhicule équipé"
+    },
+    {
+      "id": "work-2",
+      "name": "carousel-2.jpg",
+      "alt": "Patricia lors d'une coupe à domicile"
+    },
+    {
+      "id": "work-3",
+      "name": "carousel-3.jpg",
+      "alt": "Patricia et son matériel de coiffeuse itinérante"
+    },
+    {
+      "id": "work-4",
+      "name": "carousel-4.jpg",
+      "alt": "Patricia en plein brushing chez une cliente"
+    },
+    {
+      "id": "work-5",
+      "name": "equipment.jpg",
+      "alt": "Le matériel mobile de Patricia — bac de lavage et chariot qu'elle amène chez vous"
+    }
   ]
 }
