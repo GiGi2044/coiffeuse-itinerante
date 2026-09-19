@@ -20,30 +20,12 @@ const AREA: [number, number][] = [
   [46.8355689, 7.0672555], // Grolley
 ]
 
-// Rounds the polygon's sharp corners into a smoother, more organic outline.
-// Each pass replaces every edge with two points 1/4 and 3/4 along it — every
-// output point is a weighted average of two adjacent input points, so the
-// result can only stay inside the original shape's hull, never bulge past it
-// (mathematically guaranteed, not just visually likely) — it can round the
-// area out to towns not explicitly listed, but never extend meaningfully
-// beyond the outermost towns actually given.
-function chaikinSmooth(points: [number, number][], iterations: number): [number, number][] {
-  let pts = points
-  for (let iter = 0; iter < iterations; iter++) {
-    const next: [number, number][] = []
-    const n = pts.length
-    for (let i = 0; i < n; i++) {
-      const [lat0, lon0] = pts[i]
-      const [lat1, lon1] = pts[(i + 1) % n]
-      next.push([lat0 * 0.75 + lat1 * 0.25, lon0 * 0.75 + lon1 * 0.25])
-      next.push([lat0 * 0.25 + lat1 * 0.75, lon0 * 0.25 + lon1 * 0.75])
-    }
-    pts = next
-  }
-  return pts
-}
-
-const SMOOTHED_AREA = chaikinSmooth(AREA, 3)
+// A real circle reads more cleanly than the rounded polygon did — centered on
+// the centroid of the 8 towns above (not Corminboeuf specifically), with a
+// radius wide enough to fully contain the farthest of them (Courtepin, the
+// outermost at ~11.4km from that centroid), rounded up slightly for margin.
+const CIRCLE_CENTER: [number, number] = [46.7646, 7.1012]
+const CIRCLE_RADIUS_METERS = 12_000
 
 // Client-only: Leaflet reaches for `window`/`document` at import time, so it
 // can never run during server render — the map is built in a useEffect
@@ -72,7 +54,8 @@ export function ServiceAreaMap() {
         maxZoom: 19,
       }).addTo(map)
 
-      const area = L.polygon(SMOOTHED_AREA, {
+      const area = L.circle(CIRCLE_CENTER, {
+        radius: CIRCLE_RADIUS_METERS,
         color: '#a8617a',
         weight: 2,
         opacity: 0.6,
@@ -80,9 +63,10 @@ export function ServiceAreaMap() {
         fillOpacity: 0.15,
       }).addTo(map)
 
-      // Frame the shape with generous breathing room, rather than a fixed
-      // center/zoom — adapts automatically if the town list ever changes.
+      // Frame the circle with breathing room, then zoom in one extra level so
+      // it starts a bit larger/closer than a bare fitBounds would leave it.
       map.fitBounds(area.getBounds(), { padding: [32, 32] })
+      map.zoomIn(1)
     })
 
     return () => {
