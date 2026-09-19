@@ -34,17 +34,24 @@ non-`content/` file to force a real rebuild.
 
 ## 2. Admin editor (`/admin`)
 
-Two tabs:
+Not a separate editing screen — `/admin` renders the real page itself, made
+editable, with a sticky sidebar next to it:
 
-- **Content** (what Patricia uses day to day): click any text on the live page to edit
-  it in place, or click a photo to upload a replacement — both save straight to `main`
-  and are live within seconds, no rebuild. The Content tab also has a raw-JSON fallback
-  for anything not yet wired up as a click-to-edit field.
-- **Assistant** (for bigger changes — new sections, layout tweaks, wording rewrites):
-  chat with Claude → changes land on a `draft` branch → Vercel builds a preview →
-  **Publish** merges to `main`. Nothing goes live until published. Claude cannot touch
-  photos here (that's Content-tab only) or anything outside `content/`, `src/`,
-  `public/`.
+- **The page** (what Patricia uses day to day): click any text to edit it in place, or
+  a photo to upload a replacement. Edits stage locally (no network call, no autosave)
+  until you click **"Appliquer les changements"** in the sidebar, which saves everything
+  at once straight to `main` — live within seconds, no rebuild. The sidebar also has
+  **"Actualiser le contenu en direct"** — use it if content might have changed outside
+  this tab (another browser/device applied changes, or someone pushed to `content/`
+  directly) *before* you start editing, so a stale tab can't silently overwrite newer
+  fields when it saves. If two tabs are edited concurrently without one refreshing
+  first, the last Apply wins and can drop fields the earlier tab didn't know about —
+  this bit us once already; when in doubt, reload `/admin` before editing.
+- **Assistant** (sidebar, for bigger changes — new sections, layout tweaks, wording
+  rewrites): chat with Claude → changes land on a `draft` branch → Vercel builds a
+  preview → **Publish** merges to `main`. Nothing goes live until published. Claude
+  cannot touch photos here (that's the page's own click-to-upload only) or anything
+  outside `content/`, `src/`, `public/`.
 
 Handing the site to someone else = clone the repo, point the env vars above at their
 own repo/keys, done.
