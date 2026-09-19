@@ -26,6 +26,12 @@ just reverting the DNS records.
 Every `git push` to `main` now deploys automatically (content-only commits skip the
 build — see `vercel.json`).
 
+**Changed an env var and need it to take effect?** Clicking "Redeploy" on the Vercel
+dashboard isn't enough if the most recent commit was content-only — the Ignored Build
+Step just re-diffs that same commit against its parent and skips the build again,
+env vars or not. Push (or trigger) a deployment against a commit that touches a
+non-`content/` file to force a real rebuild.
+
 ## 2. Admin editor (`/admin`)
 
 Two tabs:
