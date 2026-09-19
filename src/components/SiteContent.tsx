@@ -247,6 +247,19 @@ export function SiteContent({ copy }: { copy: SiteCopy }) {
               value={copy.horaireNote}
               className="block text-muted-foreground"
             />
+            {copy.horaireExtraNotes.map((note) => (
+              <p key={note.id} className="group relative inline-block">
+                <EditableCopy
+                  listTarget={{ list: 'horaireExtraNotes', id: note.id, field: 'text' }}
+                  value={note.text}
+                  className="text-muted-foreground"
+                />
+                <RemoveListItemButton list="horaireExtraNotes" id={note.id} />
+              </p>
+            ))}
+          </div>
+          <div className="mt-4 flex justify-center">
+            <AddListItemButton list="horaireExtraNotes" label="Ajouter une ligne" />
           </div>
         </div>
       </section>

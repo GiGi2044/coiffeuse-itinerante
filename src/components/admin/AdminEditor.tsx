@@ -8,7 +8,7 @@ import { AssistantPane } from '@/components/admin/AssistantPane'
 import { Button } from '@/components/ui/button'
 import { SiteContent } from '@/components/SiteContent'
 import { EditModeProvider, type ListField, type ListKey } from '@/lib/edit-mode'
-import type { CarouselImage, SiteCopy, TarifItem } from '@/types'
+import type { CarouselImage, NoteItem, SiteCopy, TarifItem } from '@/types'
 
 const COPY_PATH = 'content/copy/site.json'
 
@@ -42,6 +42,14 @@ export function AdminEditor({ initialCopy }: { initialCopy: SiteCopy }) {
           tarifs: prev.tarifs.map((t) => (t.id === id ? ({ ...t, [field]: value } as TarifItem) : t)),
         }
       }
+      if (list === 'horaireExtraNotes') {
+        return {
+          ...prev,
+          horaireExtraNotes: prev.horaireExtraNotes.map((n) =>
+            n.id === id ? ({ ...n, [field]: value } as NoteItem) : n
+          ),
+        }
+      }
       return {
         ...prev,
         [list]: prev[list].map((item) => (item.id === id ? ({ ...item, [field]: value } as CarouselImage) : item)),
@@ -55,6 +63,10 @@ export function AdminEditor({ initialCopy }: { initialCopy: SiteCopy }) {
       if (list === 'tarifs') {
         const item: TarifItem = { id: crypto.randomUUID(), label: 'Nouveau tarif', price: 'CHF 0.-' }
         return { ...prev, tarifs: [...prev.tarifs, item] }
+      }
+      if (list === 'horaireExtraNotes') {
+        const item: NoteItem = { id: crypto.randomUUID(), text: 'Nouvelle ligne' }
+        return { ...prev, horaireExtraNotes: [...prev.horaireExtraNotes, item] }
       }
       const item: CarouselImage = {
         id: crypto.randomUUID(),
@@ -70,6 +82,9 @@ export function AdminEditor({ initialCopy }: { initialCopy: SiteCopy }) {
     setDraftCopy((prev) => {
       if (list === 'tarifs') {
         return { ...prev, tarifs: prev.tarifs.filter((t) => t.id !== id) }
+      }
+      if (list === 'horaireExtraNotes') {
+        return { ...prev, horaireExtraNotes: prev.horaireExtraNotes.filter((n) => n.id !== id) }
       }
       return { ...prev, [list]: prev[list].filter((item) => item.id !== id) }
     })

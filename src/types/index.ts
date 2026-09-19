@@ -10,6 +10,11 @@ export interface CarouselImage {
   alt: string
 }
 
+export interface NoteItem {
+  id: string
+  text: string
+}
+
 export interface SiteCopy {
   heroTagline: string
   aboutParcours: string
@@ -40,6 +45,7 @@ export interface SiteCopy {
   tarifs: TarifItem[]
   carouselItems: CarouselImage[]
   workPhotos: CarouselImage[]
+  horaireExtraNotes: NoteItem[]
 }
 
 export interface EditableFile {

@@ -3,8 +3,8 @@
 import { createContext, useContext } from 'react'
 import type { SiteCopy } from '@/types'
 
-export type ListKey = 'tarifs' | 'carouselItems' | 'workPhotos'
-export type ListField = 'label' | 'price' | 'alt'
+export type ListKey = 'tarifs' | 'carouselItems' | 'workPhotos' | 'horaireExtraNotes'
+export type ListField = 'label' | 'price' | 'alt' | 'text'
 
 interface EditModeContextValue {
   /** Whether the current render tree should show click-to-edit affordances. */
