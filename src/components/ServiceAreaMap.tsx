@@ -20,18 +20,39 @@ const AREA: [number, number][] = [
   [46.8355689, 7.0672555], // Grolley
 ]
 
-// A real circle reads more cleanly than the rounded polygon did — centered on
-// the centroid of the 8 towns above (not Corminboeuf specifically), with a
-// radius wide enough to fully contain the farthest of them (Courtepin, the
-// outermost at ~11.4km from that centroid), rounded up slightly for margin.
-const CIRCLE_CENTER: [number, number] = [46.7646, 7.1012]
-const CIRCLE_RADIUS_METERS = 12_000
+// Rounds the polygon's sharp corners into a smoother, more organic outline.
+// Each pass replaces every edge with two points 1/4 and 3/4 along it — every
+// output point is a weighted average of two adjacent input points, so the
+// result can only stay inside the original shape's hull, never bulge past it
+// (mathematically guaranteed, not just visually likely) — it can round the
+// area out to towns not explicitly listed, but never extend meaningfully
+// beyond the outermost towns actually given.
+function chaikinSmooth(points: [number, number][], iterations: number): [number, number][] {
+  let pts = points
+  for (let iter = 0; iter < iterations; iter++) {
+    const next: [number, number][] = []
+    const n = pts.length
+    for (let i = 0; i < n; i++) {
+      const [lat0, lon0] = pts[i]
+      const [lat1, lon1] = pts[(i + 1) % n]
+      next.push([lat0 * 0.75 + lat1 * 0.25, lon0 * 0.75 + lon1 * 0.25])
+      next.push([lat0 * 0.25 + lat1 * 0.75, lon0 * 0.25 + lon1 * 0.75])
+    }
+    pts = next
+  }
+  return pts
+}
+
+const SMOOTHED_AREA = chaikinSmooth(AREA, 3)
+// Initial view before the shape exists — just needs to be roughly in the
+// right place; fitBounds (below) reframes precisely once it's added.
+const INITIAL_CENTER: [number, number] = [46.7646, 7.1012]
 
 // Client-only: Leaflet reaches for `window`/`document` at import time, so it
 // can never run during server render — the map is built in a useEffect
 // against a ref, after mount, not during the initial render pass. No marker
 // pin (Leaflet's default marker icon path breaks under bundlers unless
-// reconfigured) — the circle alone communicates the coverage area.
+// reconfigured) — the shape alone communicates the coverage area.
 export function ServiceAreaMap() {
   const containerRef = useRef<HTMLDivElement>(null)
   const mapRef = useRef<import('leaflet').Map | null>(null)
@@ -50,7 +71,7 @@ export function ServiceAreaMap() {
       // against yet. Give it a sensible starting view immediately; fitBounds
       // below then refines it once the circle exists.
       const map = L.map(containerRef.current, {
-        center: CIRCLE_CENTER,
+        center: INITIAL_CENTER,
         zoom: 11,
         scrollWheelZoom: false,
       })
@@ -61,8 +82,7 @@ export function ServiceAreaMap() {
         maxZoom: 19,
       }).addTo(map)
 
-      const area = L.circle(CIRCLE_CENTER, {
-        radius: CIRCLE_RADIUS_METERS,
+      const area = L.polygon(SMOOTHED_AREA, {
         color: '#a8617a',
         weight: 2,
         opacity: 0.6,
@@ -70,9 +90,11 @@ export function ServiceAreaMap() {
         fillOpacity: 0.15,
       }).addTo(map)
 
-      // Frame the whole circle with breathing room — no extra zoom on top,
-      // the full radius needs to stay in view.
-      map.fitBounds(area.getBounds(), { padding: [32, 32] })
+      // Frame the whole shape, but snugly — a smaller padding makes it fill
+      // more of the frame at first sight. fitBounds always keeps the whole
+      // shape in view regardless of the padding value, so this can't cut it
+      // off the way an added zoomIn() risked doing.
+      map.fitBounds(area.getBounds(), { padding: [10, 10] })
     })
 
     return () => {
