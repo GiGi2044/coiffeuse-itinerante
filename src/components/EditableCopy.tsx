@@ -61,7 +61,10 @@ export function EditableCopy({
   function commit() {
     const newValue = (ref.current?.innerText ?? '').replace(/\r\n/g, '\n').trim()
     setEditing(false)
-    if (!newValue || newValue === value) {
+    // An empty result is a deliberate clear (delete all the text, click
+    // away) — save it. Only a genuine no-op (unchanged text) is skipped.
+    // To back out of an edit instead, Escape restores the original value.
+    if (newValue === value) {
       restore()
       return
     }
