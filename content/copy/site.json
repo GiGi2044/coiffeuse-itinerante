@@ -47,11 +47,6 @@
       "price": "CHF 25.- jusqu'à 10 ans / CHF 30.- jusqu'à 15 ans"
     },
     {
-      "id": "tarif-deplacement",
-      "label": "Supplément déplacement",
-      "price": "CHF 150.- (50-70min de trajet A/R)"
-    },
-    {
       "id": "tarif-shampoing-sechage",
       "label": "Shampoing + séchage uniquement",
       "price": "CHF 45.-"
