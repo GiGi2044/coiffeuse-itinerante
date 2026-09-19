@@ -21,6 +21,7 @@
   "headingZone": "Zone de déplacement",
   "zoneNote": "* Une fois par mois, le jeudi, en région bulloise.",
   "headingContact": "Contact",
+  "headingRetours": "Vos Retours",
   "navAbout": "Qui suis-je",
   "navTarifs": "Tarifs",
   "navHoraires": "Horaires",
@@ -114,5 +115,6 @@
       "id": "49e3aadf-2f6a-4bdf-8b8a-46d2067856f1",
       "text": "Merci de votre compréhension."
     }
-  ]
+  ],
+  "reviews": []
 }

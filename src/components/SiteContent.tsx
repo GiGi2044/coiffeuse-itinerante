@@ -4,21 +4,14 @@ import { EditableImage } from '@/components/EditableImage'
 import { GuardedLink } from '@/components/GuardedLink'
 import { ImageCarousel } from '@/components/ImageCarousel'
 import { MobileNav } from '@/components/MobileNav'
+import { ReviewsSection } from '@/components/ReviewsSection'
+import { SectionHeading } from '@/components/SectionHeading'
 import { ServiceAreaMap } from '@/components/ServiceAreaMap'
 import { buttonVariants } from '@/lib/button-variants'
 import { LightboxProvider } from '@/lib/lightbox'
 import { JOURS } from '@/lib/site-data'
 import { cn } from '@/lib/utils'
 import type { SiteCopy } from '@/types'
-
-function SectionHeading({ children }: { children: React.ReactNode }) {
-  return (
-    <div className="text-center">
-      <h2 className="font-display text-2xl text-foreground italic sm:text-3xl">{children}</h2>
-      <div className="mx-auto mt-3 h-px w-10 bg-primary/70" />
-    </div>
-  )
-}
 
 // The whole homepage, as a plain component driven entirely by its `copy` prop.
 // Rendered two ways: the public route (`src/app/page.tsx`) passes server-fetched
@@ -315,6 +308,10 @@ export function SiteContent({ copy }: { copy: SiteCopy }) {
           </div>
         </div>
       </section>
+
+      {/* Vos Retours — hidden on the public page until reviews exist (see
+          ReviewsSection); plain base panel (alternates against Contact) */}
+      <ReviewsSection heading={copy.headingRetours} reviews={copy.reviews} />
 
       {/* Footer */}
       <footer className="border-t border-border bg-foreground px-4 py-8 pb-[calc(2rem+env(safe-area-inset-bottom,0px))] text-center text-sm text-background sm:pb-8">

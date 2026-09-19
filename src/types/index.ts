@@ -15,6 +15,13 @@ export interface NoteItem {
   text: string
 }
 
+export interface Review {
+  id: string
+  author: string
+  rating: number
+  text: string
+}
+
 export interface SiteCopy {
   heroTagline: string
   aboutParcours: string
@@ -38,6 +45,7 @@ export interface SiteCopy {
   headingZone: string
   zoneNote: string
   headingContact: string
+  headingRetours: string
   navAbout: string
   navTarifs: string
   navHoraires: string
@@ -49,6 +57,7 @@ export interface SiteCopy {
   carouselItems: CarouselImage[]
   workPhotos: CarouselImage[]
   horaireExtraNotes: NoteItem[]
+  reviews: Review[]
 }
 
 export interface EditableFile {

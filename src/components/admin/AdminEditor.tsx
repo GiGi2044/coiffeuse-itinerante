@@ -8,7 +8,7 @@ import { AssistantPane } from '@/components/admin/AssistantPane'
 import { Button } from '@/components/ui/button'
 import { SiteContent } from '@/components/SiteContent'
 import { EditModeProvider, type ListField, type ListKey } from '@/lib/edit-mode'
-import type { CarouselImage, NoteItem, SiteCopy, TarifItem } from '@/types'
+import type { CarouselImage, NoteItem, Review, SiteCopy, TarifItem } from '@/types'
 
 const COPY_PATH = 'content/copy/site.json'
 
@@ -56,6 +56,16 @@ export function AdminEditor({ initialCopy }: { initialCopy: SiteCopy }) {
           ),
         }
       }
+      if (list === 'reviews') {
+        return {
+          ...prev,
+          reviews: prev.reviews.map((r) =>
+            r.id === id
+              ? ({ ...r, [field]: field === 'rating' ? Math.min(5, Math.max(1, Number(value) || 5)) : value } as Review)
+              : r
+          ),
+        }
+      }
       return {
         ...prev,
         [list]: prev[list].map((item) => (item.id === id ? ({ ...item, [field]: value } as CarouselImage) : item)),
@@ -73,6 +83,10 @@ export function AdminEditor({ initialCopy }: { initialCopy: SiteCopy }) {
       if (list === 'horaireExtraNotes') {
         const item: NoteItem = { id: crypto.randomUUID(), text: 'Nouvelle ligne' }
         return { ...prev, horaireExtraNotes: [...prev.horaireExtraNotes, item] }
+      }
+      if (list === 'reviews') {
+        const item: Review = { id: crypto.randomUUID(), author: 'Nom du client', rating: 5, text: "Texte de l'avis…" }
+        return { ...prev, reviews: [...prev.reviews, item] }
       }
       const item: CarouselImage = {
         id: crypto.randomUUID(),
