@@ -74,8 +74,18 @@ export function EditableCopy({
 
   // normal-case while editing: innerText reflects CSS text-transform, so an
   // element styled `uppercase` would otherwise save its uppercased rendering
+  //
+  // key={editing}: contentEditable lets the browser mutate this node's DOM
+  // directly (typing, deleting) without React knowing — deleting everything
+  // is the extreme case, leaving a DOM React never rendered. Without a key
+  // change, leaving edit mode makes React try to reconcile its remembered
+  // tree against that browser-mutated node and crash (e.g. a removeChild on
+  // a node that's no longer there). Keying by `editing` forces a clean
+  // unmount/remount exactly on that transition, never mid-edit (the key is
+  // stable while typing, so focus isn't disrupted).
   return (
     <Tag
+      key={String(editing)}
       ref={ref as never}
       className={`${className ?? ''} cursor-text outline-offset-4 transition-opacity ${
         editing
