@@ -15,7 +15,7 @@
   "footerText": "© 2025 Patricia Beuret – Coiffeuse itinérante à Fribourg",
   "headingAbout": "",
   "headingProducts": "Produits et Soins",
-  "headingMaVie": "Ma vie",
+  "headingMaVie": "Quelques instants de mon travail",
   "headingTarifs": "Tarifs",
   "headingHoraires": "Horaires",
   "headingZone": "Zone de déplacement",
@@ -81,6 +81,21 @@
       "id": "carousel-12",
       "name": "carousel-12.jpg",
       "alt": "TogetHair Shine Blonde — shampoing anti-jaunissement"
+    },
+    {
+      "id": "8cf9aafe-6127-43f5-bb95-d0d4ff30e714",
+      "name": "carousel-f970d2fc.jpg",
+      "alt": ""
+    },
+    {
+      "id": "de623204-e2eb-405d-bb1f-2a966ad1311d",
+      "name": "carousel-999e4261.jpg",
+      "alt": ""
+    },
+    {
+      "id": "2b951dd9-a305-41b0-a8a5-03eeb0be31d9",
+      "name": "carousel-e50ba472.jpg",
+      "alt": ""
     }
   ],
   "workPhotos": [
